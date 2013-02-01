@@ -19,6 +19,7 @@
 
 /* Begin PBXFileReference section */
 		F43D252A16BB508900CBC272 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
+		F43D252C16BB703100CBC272 /* QCamera.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = QCamera.entitlements; sourceTree = "<group>"; };
 		F4CBD39316B8CE5F003A4794 /* QCamera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QCamera.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4CBD39616B8CE5F003A4794 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		F4CBD39916B8CE5F003A4794 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -89,6 +90,7 @@
 		F4CBD39C16B8CE5F003A4794 /* QCamera */ = {
 			isa = PBXGroup;
 			children = (
+				F43D252C16BB703100CBC272 /* QCamera.entitlements */,
 				F4CBD3A816B8CE5F003A4794 /* QCAppDelegate.h */,
 				F4CBD3A916B8CE5F003A4794 /* QCAppDelegate.m */,
 				F4CBD3AB16B8CE5F003A4794 /* MainMenu.xib */,
@@ -272,11 +274,14 @@
 		F4CBD3B116B8CE5F003A4794 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = QCamera/QCamera.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer: Simon Guest (ZVW3PA73SZ)";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "QCamera/QCamera-Prefix.pch";
 				INFOPLIST_FILE = "QCamera/QCamera-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -284,11 +289,14 @@
 		F4CBD3B216B8CE5F003A4794 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = QCamera/QCamera.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer: Simon Guest (ZVW3PA73SZ)";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "QCamera/QCamera-Prefix.pch";
 				INFOPLIST_FILE = "QCamera/QCamera-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
