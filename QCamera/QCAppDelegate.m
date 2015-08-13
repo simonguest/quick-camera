@@ -12,6 +12,7 @@
 @implementation QCAppDelegate
 
 BOOL isMirrored = FALSE;
+BOOL isUpsideDown = FALSE;
 BOOL isBorderless = FALSE;
 NSUInteger defaultBorderStyle;
 NSString *currentWindowTitle;
@@ -19,10 +20,10 @@ int defaultDeviceIndex = 0;
 
 - (CIImage *)view:(QTCaptureView *)view willDisplayImage:(CIImage *)image
 {
-    if (isMirrored)
+    if (isMirrored || isUpsideDown)
     {
         // apply transform to invert the image
-        return [image imageByApplyingTransform:CGAffineTransformMakeScale(-1.0, 1.0)];
+        return [image imageByApplyingTransform:CGAffineTransformMakeScale(isMirrored?-1.0:1.0, isUpsideDown?-1.0:1.0)];
     }
     else{
         return image;
@@ -124,6 +125,13 @@ int defaultDeviceIndex = 0;
     // Set mirrored state correctly
     [sender setState:!isMirrored];
     isMirrored = ([sender state] == NSOnState);
+}
+
+- (IBAction)mUpsideDownImageMenuSelected:(id)sender {
+    NSLog(@"Mirror image vertically menu item selected");
+    // Set mirrored state correctly
+    [sender setState:!isUpsideDown];
+    isUpsideDown = ([sender state] == NSOnState);
 }
 
 - (IBAction)mHideBorderMenuSelected:(id)sender {

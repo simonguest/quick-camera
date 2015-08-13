@@ -25,6 +25,10 @@
 @property (strong) IBOutlet NSMenuItem *mMirrorImageMenu;
 - (IBAction)mMirrorImageMenuSelected:(id)sender;
 
+@property (strong) IBOutlet NSMenuItem *mUpsideDownMenu;
+- (IBAction)mUpsideDownImageMenuSelected:(id)sender;
+
+
 @property (strong) IBOutlet NSMenuItem *mHideBorderMenu;
 - (IBAction)mHideBorderMenuSelected:(id)sender;
 
