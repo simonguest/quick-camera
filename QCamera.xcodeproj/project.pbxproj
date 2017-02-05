@@ -7,17 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		87673A631E35C97A002ECF15 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87673A621E35C97A002ECF15 /* AVFoundation.framework */; };
+		87FF95021E355CDB0017DADB /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87FF95011E355CDB0017DADB /* AVKit.framework */; };
+		87FF95201E35B7CE0017DADB /* QCAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FF951F1E35B7CE0017DADB /* QCAppDelegate.swift */; };
+		87FF95221E35BA3B0017DADB /* QCamera-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 87FF95211E35BA3B0017DADB /* QCamera-Info.plist */; };
 		F43D252B16BB508900CBC272 /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = F43D252A16BB508900CBC272 /* icon.icns */; };
 		F4CBD39716B8CE5F003A4794 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4CBD39616B8CE5F003A4794 /* Cocoa.framework */; };
-		F4CBD3A116B8CE5F003A4794 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F4CBD39F16B8CE5F003A4794 /* InfoPlist.strings */; };
-		F4CBD3A316B8CE5F003A4794 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F4CBD3A216B8CE5F003A4794 /* main.m */; };
-		F4CBD3A716B8CE5F003A4794 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = F4CBD3A516B8CE5F003A4794 /* Credits.rtf */; };
-		F4CBD3AA16B8CE5F003A4794 /* QCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F4CBD3A916B8CE5F003A4794 /* QCAppDelegate.m */; };
 		F4CBD3AD16B8CE5F003A4794 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4CBD3AB16B8CE5F003A4794 /* MainMenu.xib */; };
-		F4CBD3B416B8CF91003A4794 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4CBD3B316B8CF91003A4794 /* QTKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		87673A621E35C97A002ECF15 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		87FF95011E355CDB0017DADB /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
+		87FF951F1E35B7CE0017DADB /* QCAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QCAppDelegate.swift; sourceTree = "<group>"; };
+		87FF95211E35BA3B0017DADB /* QCamera-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "QCamera-Info.plist"; sourceTree = "<group>"; };
 		F43D252A16BB508900CBC272 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
 		F43D252C16BB703100CBC272 /* QCamera.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = QCamera.entitlements; sourceTree = "<group>"; };
 		F4CBD39316B8CE5F003A4794 /* QCamera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QCamera.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -25,15 +28,7 @@
 		F4CBD39916B8CE5F003A4794 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		F4CBD39A16B8CE5F003A4794 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		F4CBD39B16B8CE5F003A4794 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		F4CBD39E16B8CE5F003A4794 /* QCamera-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "QCamera-Info.plist"; sourceTree = "<group>"; };
-		F4CBD3A016B8CE5F003A4794 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		F4CBD3A216B8CE5F003A4794 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		F4CBD3A416B8CE5F003A4794 /* QCamera-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "QCamera-Prefix.pch"; sourceTree = "<group>"; };
-		F4CBD3A616B8CE5F003A4794 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
-		F4CBD3A816B8CE5F003A4794 /* QCAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QCAppDelegate.h; sourceTree = "<group>"; };
-		F4CBD3A916B8CE5F003A4794 /* QCAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QCAppDelegate.m; sourceTree = "<group>"; };
 		F4CBD3AC16B8CE5F003A4794 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		F4CBD3B316B8CF91003A4794 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = System/Library/Frameworks/QTKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,7 +36,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4CBD3B416B8CF91003A4794 /* QTKit.framework in Frameworks */,
+				87673A631E35C97A002ECF15 /* AVFoundation.framework in Frameworks */,
+				87FF95021E355CDB0017DADB /* AVKit.framework in Frameworks */,
 				F4CBD39716B8CE5F003A4794 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -53,7 +49,6 @@
 			isa = PBXGroup;
 			children = (
 				F43D252A16BB508900CBC272 /* icon.icns */,
-				F4CBD3B316B8CF91003A4794 /* QTKit.framework */,
 				F4CBD39C16B8CE5F003A4794 /* QCamera */,
 				F4CBD39516B8CE5F003A4794 /* Frameworks */,
 				F4CBD39416B8CE5F003A4794 /* Products */,
@@ -71,6 +66,8 @@
 		F4CBD39516B8CE5F003A4794 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				87673A621E35C97A002ECF15 /* AVFoundation.framework */,
+				87FF95011E355CDB0017DADB /* AVKit.framework */,
 				F4CBD39616B8CE5F003A4794 /* Cocoa.framework */,
 				F4CBD39816B8CE5F003A4794 /* Other Frameworks */,
 			);
@@ -90,25 +87,12 @@
 		F4CBD39C16B8CE5F003A4794 /* QCamera */ = {
 			isa = PBXGroup;
 			children = (
+				87FF95211E35BA3B0017DADB /* QCamera-Info.plist */,
+				87FF951F1E35B7CE0017DADB /* QCAppDelegate.swift */,
 				F43D252C16BB703100CBC272 /* QCamera.entitlements */,
-				F4CBD3A816B8CE5F003A4794 /* QCAppDelegate.h */,
-				F4CBD3A916B8CE5F003A4794 /* QCAppDelegate.m */,
 				F4CBD3AB16B8CE5F003A4794 /* MainMenu.xib */,
-				F4CBD39D16B8CE5F003A4794 /* Supporting Files */,
 			);
 			path = QCamera;
-			sourceTree = "<group>";
-		};
-		F4CBD39D16B8CE5F003A4794 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				F4CBD39E16B8CE5F003A4794 /* QCamera-Info.plist */,
-				F4CBD39F16B8CE5F003A4794 /* InfoPlist.strings */,
-				F4CBD3A216B8CE5F003A4794 /* main.m */,
-				F4CBD3A416B8CE5F003A4794 /* QCamera-Prefix.pch */,
-				F4CBD3A516B8CE5F003A4794 /* Credits.rtf */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -138,11 +122,12 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = SG;
-				LastUpgradeCheck = 0640;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "Simon Guest";
 				TargetAttributes = {
 					F4CBD39216B8CE5F003A4794 = {
-						DevelopmentTeam = 23KXW8B3FM;
+						DevelopmentTeam = KRZC59WTY9;
+						LastSwiftMigration = 0820;
 					};
 				};
 			};
@@ -168,8 +153,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4CBD3A116B8CE5F003A4794 /* InfoPlist.strings in Resources */,
-				F4CBD3A716B8CE5F003A4794 /* Credits.rtf in Resources */,
+				87FF95221E35BA3B0017DADB /* QCamera-Info.plist in Resources */,
 				F4CBD3AD16B8CE5F003A4794 /* MainMenu.xib in Resources */,
 				F43D252B16BB508900CBC272 /* icon.icns in Resources */,
 			);
@@ -182,30 +166,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4CBD3A316B8CE5F003A4794 /* main.m in Sources */,
-				F4CBD3AA16B8CE5F003A4794 /* QCAppDelegate.m in Sources */,
+				87FF95201E35B7CE0017DADB /* QCAppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		F4CBD39F16B8CE5F003A4794 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F4CBD3A016B8CE5F003A4794 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		F4CBD3A516B8CE5F003A4794 /* Credits.rtf */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F4CBD3A616B8CE5F003A4794 /* en */,
-			);
-			name = Credits.rtf;
-			sourceTree = "<group>";
-		};
 		F4CBD3AB16B8CE5F003A4794 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -224,15 +191,22 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -241,9 +215,11 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
@@ -256,20 +232,28 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -277,15 +261,25 @@
 		F4CBD3B116B8CE5F003A4794 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = QCamera/QCamera.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = KRZC59WTY9;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "QCamera/QCamera-Prefix.pch";
 				INFOPLIST_FILE = "QCamera/QCamera-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.simonguest.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -293,15 +287,24 @@
 		F4CBD3B216B8CE5F003A4794 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = QCamera/QCamera.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = KRZC59WTY9;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "QCamera/QCamera-Prefix.pch";
 				INFOPLIST_FILE = "QCamera/QCamera-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.simonguest.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "";
+				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
