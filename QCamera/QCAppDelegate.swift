@@ -112,10 +112,12 @@ class QCAppDelegate: NSObject, NSApplicationDelegate {
             defaultBorderStyle = window.styleMask;
             self.window.styleMask = NSWindowStyleMask.borderless;
             self.window.level = Int(CGWindowLevelForKey(.maximumWindow));
+            window.isMovableByWindowBackground = true;
         } else {
             window.styleMask = defaultBorderStyle;
             window.title = self.windowTitle;
             self.window.level = Int(CGWindowLevelForKey(.normalWindow));
+            window.isMovableByWindowBackground = false;
         }
     }
 
@@ -143,4 +145,5 @@ class QCAppDelegate: NSObject, NSApplicationDelegate {
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         return true;
     }
+
 }

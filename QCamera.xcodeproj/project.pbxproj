@@ -10,7 +10,6 @@
 		87673A631E35C97A002ECF15 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87673A621E35C97A002ECF15 /* AVFoundation.framework */; };
 		87FF95021E355CDB0017DADB /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87FF95011E355CDB0017DADB /* AVKit.framework */; };
 		87FF95201E35B7CE0017DADB /* QCAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FF951F1E35B7CE0017DADB /* QCAppDelegate.swift */; };
-		87FF95221E35BA3B0017DADB /* QCamera-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 87FF95211E35BA3B0017DADB /* QCamera-Info.plist */; };
 		F43D252B16BB508900CBC272 /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = F43D252A16BB508900CBC272 /* icon.icns */; };
 		F4CBD39716B8CE5F003A4794 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4CBD39616B8CE5F003A4794 /* Cocoa.framework */; };
 		F4CBD3AD16B8CE5F003A4794 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4CBD3AB16B8CE5F003A4794 /* MainMenu.xib */; };
@@ -153,7 +152,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				87FF95221E35BA3B0017DADB /* QCamera-Info.plist in Resources */,
 				F4CBD3AD16B8CE5F003A4794 /* MainMenu.xib in Resources */,
 				F43D252B16BB508900CBC272 /* icon.icns in Resources */,
 			);
