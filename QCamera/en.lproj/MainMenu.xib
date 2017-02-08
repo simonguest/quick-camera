@@ -7,17 +7,17 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
             <connections>
-                <outlet property="delegate" destination="494" id="IVa-Di-5Ho"/>
+                <outlet property="delegate" destination="494" id="VfT-3f-Luw"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <menu title="AMainMenu" systemMenu="main" id="29">
             <items>
-                <menuItem title="QCamera" id="56">
-                    <menu key="submenu" title="QCamera" systemMenu="apple" id="57">
+                <menuItem title="Quick Camera" id="56">
+                    <menu key="submenu" title="Quick Camera" systemMenu="apple" id="57">
                         <items>
-                            <menuItem title="About QCamera" id="58">
+                            <menuItem title="About Quick Camera" id="58">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="orderFrontStandardAboutPanel:" target="-2" id="142"/>
@@ -36,7 +36,7 @@
                             <menuItem isSeparatorItem="YES" id="144">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Hide QCamera" keyEquivalent="h" id="134">
+                            <menuItem title="Hide Quick Camera" keyEquivalent="h" id="134">
                                 <connections>
                                     <action selector="hide:" target="-1" id="367"/>
                                 </connections>
@@ -55,7 +55,7 @@
                             <menuItem isSeparatorItem="YES" id="149">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Quit QCamera" keyEquivalent="q" id="136">
+                            <menuItem title="Quit Quick Camera" keyEquivalent="q" id="136">
                                 <connections>
                                     <action selector="terminate:" target="-3" id="449"/>
                                 </connections>
@@ -330,7 +330,7 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Help" systemMenu="help" id="491">
                         <items>
-                            <menuItem title="QCamera Help" keyEquivalent="?" id="492">
+                            <menuItem title="Quick Camera Help" keyEquivalent="?" id="492">
                                 <connections>
                                     <action selector="showHelp:" target="-1" id="493"/>
                                 </connections>
@@ -341,7 +341,7 @@
             </items>
             <point key="canvasLocation" x="103" y="183"/>
         </menu>
-        <window title="QCamera" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="371">
+        <window title="Quick Camera" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="371">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="335" y="390" width="509" height="360"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
@@ -351,11 +351,11 @@
             </view>
             <point key="canvasLocation" x="140.5" y="-105"/>
         </window>
-        <customObject id="494" customClass="QCAppDelegate" customModule="QCamera">
+        <customObject id="494" customClass="QCAppDelegate" customModule="Quick_Camera">
             <connections>
                 <outlet property="playerView" destination="372" id="tVX-fO-IZ2"/>
                 <outlet property="selectSourceMenu" destination="124" id="h5v-Cn-4oU"/>
-                <outlet property="window" destination="371" id="62T-zC-iGO"/>
+                <outlet property="window" destination="371" id="fTI-Cc-re1"/>
             </connections>
         </customObject>
         <customObject id="420" customClass="NSFontManager"/>

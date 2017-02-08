@@ -19,10 +19,10 @@
 		87673A621E35C97A002ECF15 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		87FF95011E355CDB0017DADB /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		87FF951F1E35B7CE0017DADB /* QCAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QCAppDelegate.swift; sourceTree = "<group>"; };
-		87FF95211E35BA3B0017DADB /* QCamera-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "QCamera-Info.plist"; sourceTree = "<group>"; };
+		87FF95211E35BA3B0017DADB /* Quick Camera-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Quick Camera-Info.plist"; sourceTree = "<group>"; };
 		F43D252A16BB508900CBC272 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
 		F43D252C16BB703100CBC272 /* QCamera.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = QCamera.entitlements; sourceTree = "<group>"; };
-		F4CBD39316B8CE5F003A4794 /* QCamera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QCamera.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4CBD39316B8CE5F003A4794 /* Quick Camera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Quick Camera.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4CBD39616B8CE5F003A4794 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		F4CBD39916B8CE5F003A4794 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		F4CBD39A16B8CE5F003A4794 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -57,7 +57,7 @@
 		F4CBD39416B8CE5F003A4794 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F4CBD39316B8CE5F003A4794 /* QCamera.app */,
+				F4CBD39316B8CE5F003A4794 /* Quick Camera.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -86,7 +86,7 @@
 		F4CBD39C16B8CE5F003A4794 /* QCamera */ = {
 			isa = PBXGroup;
 			children = (
-				87FF95211E35BA3B0017DADB /* QCamera-Info.plist */,
+				87FF95211E35BA3B0017DADB /* Quick Camera-Info.plist */,
 				87FF951F1E35B7CE0017DADB /* QCAppDelegate.swift */,
 				F43D252C16BB703100CBC272 /* QCamera.entitlements */,
 				F4CBD3AB16B8CE5F003A4794 /* MainMenu.xib */,
@@ -97,9 +97,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		F4CBD39216B8CE5F003A4794 /* QCamera */ = {
+		F4CBD39216B8CE5F003A4794 /* Quick Camera */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F4CBD3B016B8CE5F003A4794 /* Build configuration list for PBXNativeTarget "QCamera" */;
+			buildConfigurationList = F4CBD3B016B8CE5F003A4794 /* Build configuration list for PBXNativeTarget "Quick Camera" */;
 			buildPhases = (
 				F4CBD38F16B8CE5F003A4794 /* Sources */,
 				F4CBD39016B8CE5F003A4794 /* Frameworks */,
@@ -109,9 +109,9 @@
 			);
 			dependencies = (
 			);
-			name = QCamera;
+			name = "Quick Camera";
 			productName = QCamera;
-			productReference = F4CBD39316B8CE5F003A4794 /* QCamera.app */;
+			productReference = F4CBD39316B8CE5F003A4794 /* Quick Camera.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -130,7 +130,7 @@
 					};
 				};
 			};
-			buildConfigurationList = F4CBD38E16B8CE5F003A4794 /* Build configuration list for PBXProject "QCamera" */;
+			buildConfigurationList = F4CBD38E16B8CE5F003A4794 /* Build configuration list for PBXProject "Quick Camera" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -142,7 +142,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F4CBD39216B8CE5F003A4794 /* QCamera */,
+				F4CBD39216B8CE5F003A4794 /* Quick Camera */,
 			);
 		};
 /* End PBXProject section */
@@ -267,11 +267,11 @@
 				DEVELOPMENT_TEAM = KRZC59WTY9;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "QCamera/QCamera-Prefix.pch";
-				INFOPLIST_FILE = "QCamera/QCamera-Info.plist";
+				INFOPLIST_FILE = "QCamera/Quick Camera-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.simonguest.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE = "";
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
@@ -293,11 +293,11 @@
 				DEVELOPMENT_TEAM = KRZC59WTY9;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "QCamera/QCamera-Prefix.pch";
-				INFOPLIST_FILE = "QCamera/QCamera-Info.plist";
+				INFOPLIST_FILE = "QCamera/Quick Camera-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.simonguest.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE = "";
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
@@ -310,7 +310,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F4CBD38E16B8CE5F003A4794 /* Build configuration list for PBXProject "QCamera" */ = {
+		F4CBD38E16B8CE5F003A4794 /* Build configuration list for PBXProject "Quick Camera" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F4CBD3AE16B8CE5F003A4794 /* Debug */,
@@ -319,7 +319,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F4CBD3B016B8CE5F003A4794 /* Build configuration list for PBXNativeTarget "QCamera" */ = {
+		F4CBD3B016B8CE5F003A4794 /* Build configuration list for PBXNativeTarget "Quick Camera" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F4CBD3B116B8CE5F003A4794 /* Debug */,
