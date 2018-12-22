@@ -3,7 +3,7 @@
 //  Quick Camera
 //
 //  Created by Simon Guest on 1/22/17.
-//  Copyright © 2017 Simon Guest. All rights reserved.
+//  Copyright © 2013-2019 Simon Guest. All rights reserved.
 //
 
 import Cocoa
@@ -12,26 +12,30 @@ import AVFoundation
 
 @NSApplicationMain
 class QCAppDelegate: NSObject, NSApplicationDelegate {
-
+    
     @IBOutlet weak var window: NSWindow!
     @IBOutlet weak var selectSourceMenu: NSMenuItem!
     @IBOutlet weak var playerView: AVPlayerView!
-
+    
     var isMirrored: Bool = false;
     var isUpsideDown: Bool = false;
+    
+    // 0 = normal, 1 = 90' top to right, 2 = 180' top to bottom, 3 = 270' top to left
+    var position = 0;
+    
     var isBorderless: Bool = false;
-    var defaultBorderStyle: NSWindowStyleMask = NSWindowStyleMask.closable;
+    var defaultBorderStyle: NSWindow.StyleMask = NSWindow.StyleMask.closable;
     var windowTitle = "Quick Camera";
     var defaultDeviceIndex: Int = 0;
-
+    
     var devices: [AVCaptureDevice]!;
     var captureSession: AVCaptureSession!;
     var captureLayer: AVCaptureVideoPreviewLayer!;
-
+    
     func detectVideoDevices() {
         NSLog("Detecting video devices...");
-        self.devices = AVCaptureDevice.devices(withMediaType: AVMediaTypeVideo) as! [AVCaptureDevice];
-
+        self.devices = AVCaptureDevice.devices(for: AVMediaType(rawValue: convertFromAVMediaType(AVMediaType.video)));
+        
         if (devices?.count == 0) {
             let popup = NSAlert();
             popup.messageText = "Unfortunately, you don't appear to have any cameras connected. Goodbye for now!";
@@ -40,16 +44,16 @@ class QCAppDelegate: NSObject, NSApplicationDelegate {
         } else {
             NSLog("%d devices found", devices?.count ?? 0);
         }
-
+        
         let deviceMenu = NSMenu();
         var deviceIndex = 0;
-
+        
         for device in self.devices {
             let deviceMenuItem = NSMenuItem(title: device.localizedName, action: #selector(deviceMenuChanged), keyEquivalent: "")
             deviceMenuItem.target = self;
             deviceMenuItem.representedObject = deviceIndex;
             if (deviceIndex == defaultDeviceIndex) {
-                deviceMenuItem.state = NSOnState;
+                deviceMenuItem.state = NSControl.StateValue.on;
             }
             if (deviceIndex < 9) {
                 deviceMenuItem.keyEquivalent = String(deviceIndex + 1);
@@ -59,7 +63,7 @@ class QCAppDelegate: NSObject, NSApplicationDelegate {
         }
         selectSourceMenu.submenu = deviceMenu;
     }
-
+    
     func startCaptureWithVideoDevice(defaultDevice: Int) {
         NSLog("Starting capture with device index %d", defaultDevice);
         if (captureSession != nil) {
@@ -72,8 +76,8 @@ class QCAppDelegate: NSObject, NSApplicationDelegate {
             self.captureSession.addInput(input);
             self.captureSession.startRunning();
             self.captureLayer = AVCaptureVideoPreviewLayer(session: self.captureSession);
-            self.captureLayer.connection.automaticallyAdjustsVideoMirroring = false;
-            self.captureLayer.connection.isVideoMirrored = false;
+            self.captureLayer.connection?.automaticallyAdjustsVideoMirroring = false;
+            self.captureLayer.connection?.isVideoMirrored = false;
             self.playerView.layer = self.captureLayer;
             self.playerView.controlsStyle = AVPlayerViewControlsStyle.none;
             self.playerView.layer?.backgroundColor = CGColor.black;
@@ -86,71 +90,122 @@ class QCAppDelegate: NSObject, NSApplicationDelegate {
             popup.runModal();
         }
     }
-
+    
     @IBAction func mirrorHorizontally(_ sender: NSMenuItem) {
         NSLog("Mirror image menu item selected");
         isMirrored = !isMirrored;
-        self.captureLayer.connection.isVideoMirrored = isMirrored;
-        sender.state = (isMirrored ? NSOnState : NSOffState);
+        self.captureLayer.connection?.isVideoMirrored = isMirrored;
+        sender.state = convertToNSControlStateValue((isMirrored ? NSControl.StateValue.on.rawValue : NSControl.StateValue.off.rawValue));
     }
-
+    
+    func setRotation(_ position: Int){
+        switch (position){
+        case 1: if (!isUpsideDown){
+            self.captureLayer.connection?.videoOrientation = AVCaptureVideoOrientation.landscapeLeft;
+        } else {
+            self.captureLayer.connection?.videoOrientation = AVCaptureVideoOrientation.landscapeRight;
+        }
+        break;
+        case 2: if (!isUpsideDown){
+            self.captureLayer.connection?.videoOrientation = AVCaptureVideoOrientation.portraitUpsideDown;
+        } else {
+            self.captureLayer.connection?.videoOrientation = AVCaptureVideoOrientation.portrait;
+        }
+        break;
+        case 3: if (!isUpsideDown) {
+            self.captureLayer.connection?.videoOrientation = AVCaptureVideoOrientation.landscapeRight;
+        } else {
+            self.captureLayer.connection?.videoOrientation = AVCaptureVideoOrientation.landscapeLeft;
+        }
+        break;
+        case 0: if (!isUpsideDown) {
+            self.captureLayer.connection?.videoOrientation = AVCaptureVideoOrientation.portrait;
+        } else {
+            self.captureLayer.connection?.videoOrientation = AVCaptureVideoOrientation.portraitUpsideDown;
+        }
+        break;
+        default: break;
+        }
+    }
+    
     @IBAction func mirrorVertically(_ sender: NSMenuItem) {
         NSLog("Mirror image vertically menu item selected");
         isUpsideDown = !isUpsideDown;
-        self.captureLayer.connection.videoOrientation = isUpsideDown ? AVCaptureVideoOrientation.portraitUpsideDown : AVCaptureVideoOrientation.portrait;
-        sender.state = (isUpsideDown ? NSOnState : NSOffState);
+        setRotation(position);
+        sender.state = convertToNSControlStateValue((isUpsideDown ? NSControl.StateValue.on.rawValue : NSControl.StateValue.off.rawValue));
     }
     
     @IBAction func rotateLeft(_ sender: NSMenuItem) {
-        NSLog("Rotate Left menu item selected");
+        NSLog("Rotate Left menu item selected with position %d", position);
+        position = position - 1;
+        if (position == -1) { position = 3;}
+        setRotation(position);
     }
     
     @IBAction func rotateRight(_ sender: NSMenuItem) {
-        NSLog("Rotate Right menu item selected");
+        NSLog("Rotate Right menu item selected with position %d", position);
+        position = position + 1;
+        if (position == 4) { position = 0;}
+        setRotation(position);
     }
-
+    
     @IBAction func borderless(_ sender: NSMenuItem) {
         NSLog("Borderless menu item selected");
         isBorderless = !isBorderless;
-        sender.state = (isBorderless ? NSOnState : NSOffState);
-
+        sender.state = convertToNSControlStateValue((isBorderless ? NSControl.StateValue.on.rawValue : NSControl.StateValue.off.rawValue));
+        
         if (isBorderless) {
             // remove border and affix window on top
             defaultBorderStyle = window.styleMask;
-            self.window.styleMask = NSWindowStyleMask.borderless;
-            self.window.level = Int(CGWindowLevelForKey(.maximumWindow));
+            self.window.styleMask = NSWindow.StyleMask.borderless;
+            self.window.level = convertToNSWindowLevel(Int(CGWindowLevelForKey(.maximumWindow)));
             window.isMovableByWindowBackground = true;
         } else {
             window.styleMask = defaultBorderStyle;
             window.title = self.windowTitle;
-            self.window.level = Int(CGWindowLevelForKey(.normalWindow));
+            self.window.level = convertToNSWindowLevel(Int(CGWindowLevelForKey(.normalWindow)));
             window.isMovableByWindowBackground = false;
         }
     }
-
-    func deviceMenuChanged(_ sender: NSMenuItem) {
+    
+    @objc func deviceMenuChanged(_ sender: NSMenuItem) {
         NSLog("Device Menu changed");
-        if (sender.state == NSOnState) {
+        if (sender.state == NSControl.StateValue.on) {
             // selected the active device, so nothing to do here
             return;
         }
-
+        
         // set the checkbox on the currently selected device
         for menuItem: NSMenuItem in selectSourceMenu.submenu!.items {
-            menuItem.state = NSOffState;
+            menuItem.state = NSControl.StateValue.off;
         }
-        sender.state = NSOnState;
-
+        sender.state = NSControl.StateValue.on;
+        
         self.startCaptureWithVideoDevice(defaultDevice: sender.representedObject as! Int)
     }
-
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         detectVideoDevices();
         startCaptureWithVideoDevice(defaultDevice: defaultDeviceIndex);
     }
-
+    
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         return true;
     }
+    
+}
 
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromAVMediaType(_ input: AVMediaType) -> String {
+    return input.rawValue
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToNSControlStateValue(_ input: Int) -> NSControl.StateValue {
+    return NSControl.StateValue(rawValue: input)
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToNSWindowLevel(_ input: Int) -> NSWindow.Level {
+    return NSWindow.Level(rawValue: input)
 }

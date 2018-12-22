@@ -91,14 +91,12 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Rotate Image" id="u5u-xX-dxx">
                                     <items>
-                                        <menuItem title="Rotate Left" id="W0l-0M-Fz8">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        <menuItem title="Rotate Left" keyEquivalent="l" id="W0l-0M-Fz8">
                                             <connections>
                                                 <action selector="rotateLeft:" target="494" id="1Xt-5a-Nal"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Rotate Right" id="Cow-qK-cCO">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        <menuItem title="Rotate Right" keyEquivalent="r" id="Cow-qK-cCO">
                                             <connections>
                                                 <action selector="rotateRight:" target="494" id="8Ic-vE-geE"/>
                                             </connections>
