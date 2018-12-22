@@ -34,7 +34,7 @@ class QCAppDelegate: NSObject, NSApplicationDelegate {
     
     func detectVideoDevices() {
         NSLog("Detecting video devices...");
-        self.devices = AVCaptureDevice.devices(for: AVMediaType(rawValue: convertFromAVMediaType(AVMediaType.video)));
+        self.devices = AVCaptureDevice.devices(for: AVMediaType.video);
         
         if (devices?.count == 0) {
             let popup = NSAlert();
@@ -193,11 +193,6 @@ class QCAppDelegate: NSObject, NSApplicationDelegate {
         return true;
     }
     
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertFromAVMediaType(_ input: AVMediaType) -> String {
-    return input.rawValue
 }
 
 // Helper function inserted by Swift 4.2 migrator.
