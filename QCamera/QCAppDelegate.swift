@@ -87,22 +87,29 @@ class QCAppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    @IBAction func mirrorImageSelected(_ sender: NSMenuItem) {
+    @IBAction func mirrorHorizontally(_ sender: NSMenuItem) {
         NSLog("Mirror image menu item selected");
         isMirrored = !isMirrored;
         self.captureLayer.connection.isVideoMirrored = isMirrored;
         sender.state = (isMirrored ? NSOnState : NSOffState);
     }
 
-    @IBAction func mirrorVerticalImageSelected(_ sender: NSMenuItem) {
+    @IBAction func mirrorVertically(_ sender: NSMenuItem) {
         NSLog("Mirror image vertically menu item selected");
         isUpsideDown = !isUpsideDown;
         self.captureLayer.connection.videoOrientation = isUpsideDown ? AVCaptureVideoOrientation.portraitUpsideDown : AVCaptureVideoOrientation.portrait;
         sender.state = (isUpsideDown ? NSOnState : NSOffState);
     }
+    
+    @IBAction func rotateLeft(_ sender: NSMenuItem) {
+        NSLog("Rotate Left menu item selected");
+    }
+    
+    @IBAction func rotateRight(_ sender: NSMenuItem) {
+        NSLog("Rotate Right menu item selected");
+    }
 
-
-    @IBAction func borderlessSelected(_ sender: NSMenuItem) {
+    @IBAction func borderless(_ sender: NSMenuItem) {
         NSLog("Borderless menu item selected");
         isBorderless = !isBorderless;
         sender.state = (isBorderless ? NSOnState : NSOffState);

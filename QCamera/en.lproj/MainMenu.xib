@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -69,19 +70,45 @@
                             <menuItem title="Select Source" id="124">
                                 <menu key="submenu" title="Select Source" systemMenu="recentDocuments" id="125"/>
                             </menuItem>
-                            <menuItem title="Mirror Image" keyEquivalent="m" id="78">
-                                <connections>
-                                    <action selector="mirrorImageSelected:" target="494" id="eva-kT-SgM"/>
-                                </connections>
+                            <menuItem title="Mirror Image" id="gpD-u2-VxM">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Mirror Image" id="Xok-N7-YG0">
+                                    <items>
+                                        <menuItem title="Mirror Horizontally" keyEquivalent="m" id="78">
+                                            <connections>
+                                                <action selector="mirrorHorizontally:" target="494" id="U1E-Z0-0IF"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Mirror Vertically" keyEquivalent="M" id="658" userLabel="Mirror Image Vertically">
+                                            <connections>
+                                                <action selector="mirrorVertically:" target="494" id="rj1-a8-kfG"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
                             </menuItem>
-                            <menuItem title="Mirror Image Vertically" keyEquivalent="M" id="658" userLabel="Mirror Image Vertically">
-                                <connections>
-                                    <action selector="mirrorVerticalImageSelected:" target="494" id="5lK-kp-09u"/>
-                                </connections>
+                            <menuItem title="Rotate Image" id="5lc-mO-wOR">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Rotate Image" id="u5u-xX-dxx">
+                                    <items>
+                                        <menuItem title="Rotate Left" id="W0l-0M-Fz8">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="rotateLeft:" target="494" id="1Xt-5a-Nal"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Rotate Right" id="Cow-qK-cCO">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="rotateRight:" target="494" id="8Ic-vE-geE"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
                             </menuItem>
                             <menuItem title="Borderless Mode" keyEquivalent="b" id="651">
                                 <connections>
-                                    <action selector="borderlessSelected:" target="494" id="VZ1-f9-r33"/>
+                                    <action selector="borderless:" target="494" id="XSj-SB-hEo"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="79">
@@ -344,7 +371,7 @@
         <window title="Quick Camera" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="371">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="335" y="390" width="509" height="360"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
             <view key="contentView" wantsLayer="YES" id="372" customClass="AVPlayerView">
                 <rect key="frame" x="0.0" y="0.0" width="509" height="360"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -360,5 +387,8 @@
         </customObject>
         <customObject id="420" customClass="NSFontManager"/>
         <userDefaultsController representsSharedInstance="YES" id="654"/>
+        <menuItem title="Item" id="iBa-Au-CgF">
+            <modifierMask key="keyEquivalentModifierMask"/>
+        </menuItem>
     </objects>
 </document>
