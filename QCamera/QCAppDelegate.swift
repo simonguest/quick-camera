@@ -95,7 +95,6 @@ class QCAppDelegate: NSObject, NSApplicationDelegate {
         NSLog("Mirror image menu item selected");
         isMirrored = !isMirrored;
         self.captureLayer.connection?.isVideoMirrored = isMirrored;
-        sender.state = convertToNSControlStateValue((isMirrored ? NSControl.StateValue.on.rawValue : NSControl.StateValue.off.rawValue));
     }
     
     func setRotation(_ position: Int){
@@ -132,8 +131,8 @@ class QCAppDelegate: NSObject, NSApplicationDelegate {
         NSLog("Mirror image vertically menu item selected");
         isUpsideDown = !isUpsideDown;
         setRotation(position);
-        self.captureLayer.connection?.isVideoMirrored = isUpsideDown;
-        sender.state = convertToNSControlStateValue((isUpsideDown ? NSControl.StateValue.on.rawValue : NSControl.StateValue.off.rawValue));
+        isMirrored = !isMirrored;
+        self.captureLayer.connection?.isVideoMirrored = isMirrored;
     }
     
     @IBAction func rotateLeft(_ sender: NSMenuItem) {
