@@ -132,6 +132,7 @@ class QCAppDelegate: NSObject, NSApplicationDelegate {
         NSLog("Mirror image vertically menu item selected");
         isUpsideDown = !isUpsideDown;
         setRotation(position);
+        self.captureLayer.connection?.isVideoMirrored = isUpsideDown;
         sender.state = convertToNSControlStateValue((isUpsideDown ? NSControl.StateValue.on.rawValue : NSControl.StateValue.off.rawValue));
     }
     
