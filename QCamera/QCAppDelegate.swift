@@ -11,7 +11,14 @@ import AVKit
 import AVFoundation
 
 @NSApplicationMain
-class QCAppDelegate: NSObject, NSApplicationDelegate {
+class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
+
+    let usb = QCUsbWatcher()
+    func deviceCountChanged() {
+        self.detectVideoDevices()
+        self.startCaptureWithVideoDevice(defaultDevice: selectedDeviceIndex)
+    }
+
     
     @IBOutlet weak var window: NSWindow!
     @IBOutlet weak var selectSourceMenu: NSMenuItem!
@@ -26,7 +33,8 @@ class QCAppDelegate: NSObject, NSApplicationDelegate {
     var isBorderless: Bool = false;
     var defaultBorderStyle: NSWindow.StyleMask = NSWindow.StyleMask.closable;
     var windowTitle = "Quick Camera";
-    var defaultDeviceIndex: Int = 0;
+    let defaultDeviceIndex: Int = 0;
+    var selectedDeviceIndex: Int = 0
     
     var devices: [AVCaptureDevice]!;
     var captureSession: AVCaptureSession!;
@@ -47,13 +55,21 @@ class QCAppDelegate: NSObject, NSApplicationDelegate {
         
         let deviceMenu = NSMenu();
         var deviceIndex = 0;
+
+        // Here we need to keep track of the current device (if selected) in order to keep it checked in the menu
+        var currentdevice = self.devices[defaultDeviceIndex]
+        if(self.captureSession != nil) {
+            currentdevice = (self.captureSession.inputs[0] as! AVCaptureDeviceInput).device
+        }
+        self.selectedDeviceIndex = defaultDeviceIndex
         
         for device in self.devices {
             let deviceMenuItem = NSMenuItem(title: device.localizedName, action: #selector(deviceMenuChanged), keyEquivalent: "")
             deviceMenuItem.target = self;
             deviceMenuItem.representedObject = deviceIndex;
-            if (deviceIndex == defaultDeviceIndex) {
+            if (device == currentdevice) {
                 deviceMenuItem.state = NSControl.StateValue.on;
+                self.selectedDeviceIndex = deviceIndex
             }
             if (deviceIndex < 9) {
                 deviceMenuItem.keyEquivalent = String(deviceIndex + 1);
@@ -187,6 +203,7 @@ class QCAppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         detectVideoDevices();
         startCaptureWithVideoDevice(defaultDevice: defaultDeviceIndex);
+        usb.delegate = self
     }
     
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
