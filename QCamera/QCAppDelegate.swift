@@ -82,11 +82,18 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
     
     func startCaptureWithVideoDevice(defaultDevice: Int) {
         NSLog("Starting capture with device index %d", defaultDevice);
+        let device: AVCaptureDevice = self.devices[defaultDevice];
+        
         if (captureSession != nil) {
+            
+            // if we are "restarting" a session but the device is the same exit early
+            let currentdevice = (self.captureSession.inputs[0] as! AVCaptureDeviceInput).device
+            guard currentdevice != device else { return }
+            
             captureSession.stopRunning();
         }
         captureSession = AVCaptureSession();
-        let device: AVCaptureDevice = self.devices[defaultDevice];
+        
         do {
             let input: AVCaptureDeviceInput = try AVCaptureDeviceInput(device: device);
             self.captureSession.addInput(input);
