@@ -3,7 +3,7 @@
 //  Quick Camera
 //
 //  Created by Simon Guest on 1/22/17.
-//  Copyright © 2013-2019 Simon Guest. All rights reserved.
+//  Copyright © 2013-2020 Simon Guest. All rights reserved.
 //
 
 import Cocoa
@@ -19,7 +19,6 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
         self.startCaptureWithVideoDevice(defaultDevice: selectedDeviceIndex)
     }
 
-    
     @IBOutlet weak var window: NSWindow!
     @IBOutlet weak var selectSourceMenu: NSMenuItem!
     @IBOutlet weak var playerView: AVPlayerView!
@@ -39,6 +38,12 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
     var devices: [AVCaptureDevice]!;
     var captureSession: AVCaptureSession!;
     var captureLayer: AVCaptureVideoPreviewLayer!;
+
+    func errorMessage(message: String){
+        let popup = NSAlert();
+        popup.messageText = message;
+        popup.runModal();
+    }
     
     func detectVideoDevices() {
         NSLog("Detecting video devices...");
@@ -57,9 +62,9 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
         var deviceIndex = 0;
 
         // Here we need to keep track of the current device (if selected) in order to keep it checked in the menu
-        var currentdevice = self.devices[defaultDeviceIndex]
+        var currentDevice = self.devices[defaultDeviceIndex]
         if(self.captureSession != nil) {
-            currentdevice = (self.captureSession.inputs[0] as! AVCaptureDeviceInput).device
+            currentDevice = (self.captureSession.inputs[0] as! AVCaptureDeviceInput).device
         }
         self.selectedDeviceIndex = defaultDeviceIndex
         
@@ -67,7 +72,7 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
             let deviceMenuItem = NSMenuItem(title: device.localizedName, action: #selector(deviceMenuChanged), keyEquivalent: "")
             deviceMenuItem.target = self;
             deviceMenuItem.representedObject = deviceIndex;
-            if (device == currentdevice) {
+            if (device == currentDevice) {
                 deviceMenuItem.state = NSControl.StateValue.on;
                 self.selectedDeviceIndex = deviceIndex
             }
@@ -87,8 +92,8 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
         if (captureSession != nil) {
             
             // if we are "restarting" a session but the device is the same exit early
-            let currentdevice = (self.captureSession.inputs[0] as! AVCaptureDeviceInput).device
-            guard currentdevice != device else { return }
+            let currentDevice = (self.captureSession.inputs[0] as! AVCaptureDeviceInput).device
+            guard currentDevice != device else { return }
             
             captureSession.stopRunning();
         }
@@ -108,9 +113,7 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
             self.window.title = self.windowTitle;
         } catch {
             NSLog("Error while opening device");
-            let popup = NSAlert();
-            popup.messageText = "Unfortunately, there was an error when trying to access the camera. Try again or select a different one.";
-            popup.runModal();
+            self.errorMessage(message: "Unfortunately, there was an error when trying to access the camera. Try again or select a different one.");
         }
     }
     
@@ -171,23 +174,82 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
         if (position == 4) { position = 0;}
         setRotation(position);
     }
+        
+    private func addBorder(){
+        window.styleMask = defaultBorderStyle;
+        window.title = self.windowTitle;
+        self.window.level = convertToNSWindowLevel(Int(CGWindowLevelForKey(.normalWindow)));
+        window.isMovableByWindowBackground = false;
+    }
+    
+    private func removeBorder() {
+        defaultBorderStyle = window.styleMask;
+        self.window.styleMask = NSWindow.StyleMask.borderless;
+        self.window.level = convertToNSWindowLevel(Int(CGWindowLevelForKey(.maximumWindow)));
+        window.isMovableByWindowBackground = true;
+    }
     
     @IBAction func borderless(_ sender: NSMenuItem) {
         NSLog("Borderless menu item selected");
         isBorderless = !isBorderless;
         sender.state = convertToNSControlStateValue((isBorderless ? NSControl.StateValue.on.rawValue : NSControl.StateValue.off.rawValue));
-        
         if (isBorderless) {
-            // remove border and affix window on top
-            defaultBorderStyle = window.styleMask;
-            self.window.styleMask = NSWindow.StyleMask.borderless;
-            self.window.level = convertToNSWindowLevel(Int(CGWindowLevelForKey(.maximumWindow)));
-            window.isMovableByWindowBackground = true;
+            removeBorder()
         } else {
-            window.styleMask = defaultBorderStyle;
-            window.title = self.windowTitle;
-            self.window.level = convertToNSWindowLevel(Int(CGWindowLevelForKey(.normalWindow)));
-            window.isMovableByWindowBackground = false;
+            addBorder()
+        }
+    }
+
+    @IBAction func saveImage(_ sender: NSMenuItem) {
+        if (captureSession != nil){
+            if #available(OSX 10.12, *) {
+                // turn borderless on, capture image, return border to previous state
+                let borderlessState = self.isBorderless
+                if (borderlessState == false) {
+                    NSLog("Removing border");
+                    self.removeBorder()
+                }
+
+                /* Pause the RunLoop for 0.1 sec to let the window repaint after removing the border - I'm not a fan of this approach
+                   but can't find another way to listen to an event for the window being updated. PRs welcome :) */
+                RunLoop.current.run(mode: .default, before: Date(timeIntervalSinceNow: 0.1))
+
+                let cgImage = CGWindowListCreateImage(CGRect.null, .optionIncludingWindow, CGWindowID(self.window.windowNumber), [.boundsIgnoreFraming, .bestResolution])
+
+                if (borderlessState == false){
+                    self.addBorder()
+                }
+
+                DispatchQueue.main.async {
+                    let now = Date()
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd"
+                    let date = dateFormatter.string(from: now)
+                    dateFormatter.dateFormat = "h.mm.ss a"
+                    let time = dateFormatter.string(from: now)
+
+                    let panel = NSSavePanel()
+                    panel.nameFieldStringValue = String(format: "Quick Camera Image %@ at %@.png", date, time)
+                    panel.beginSheetModal(for: self.window) { (result) in
+                        if (result == NSApplication.ModalResponse.OK){
+                            NSLog(panel.url!.absoluteString)
+                            let destination = CGImageDestinationCreateWithURL(panel.url! as CFURL, kUTTypePNG, 1, nil)
+                            if (destination == nil)
+                            {
+                                NSLog("Could not write file - destination returned from CGImageDestinationCreateWithURL was nil");
+                                self.errorMessage(message: "Unfortunately, the image could not be saved to this location.")
+                            } else {
+                                CGImageDestinationAddImage(destination!, cgImage!, nil)
+                                CGImageDestinationFinalize(destination!)
+                            }
+                        }
+                    }
+                }
+            } else {
+                let popup = NSAlert();
+                popup.messageText = "Unfortunately, saving images is only supported in Mac OSX 10.12 (Sierra) and higher.";
+                popup.runModal();
+            }
         }
     }
     
@@ -214,17 +276,16 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
     }
     
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
-        return true;
+        true;
     }
-    
 }
 
 // Helper function inserted by Swift 4.2 migrator.
 fileprivate func convertToNSControlStateValue(_ input: Int) -> NSControl.StateValue {
-    return NSControl.StateValue(rawValue: input)
+    NSControl.StateValue(rawValue: input)
 }
 
 // Helper function inserted by Swift 4.2 migrator.
 fileprivate func convertToNSWindowLevel(_ input: Int) -> NSWindow.Level {
-    return NSWindow.Level(rawValue: input)
+    NSWindow.Level(rawValue: input)
 }
