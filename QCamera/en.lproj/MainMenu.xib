@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17156" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097.2"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17156"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -112,6 +112,11 @@
                             <menuItem title="Borderless Mode" keyEquivalent="b" id="651">
                                 <connections>
                                     <action selector="borderless:" target="494" id="XSj-SB-hEo"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Fix Aspect Ratio" keyEquivalent="a" id="eHX-9R-cym">
+                                <connections>
+                                    <action selector="toggleFixAspectRatio:" target="-1" id="5T3-Dw-OxE"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="79">
@@ -374,7 +379,7 @@
         <window title="Quick Camera" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="371">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="335" y="390" width="509" height="360"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="3840" height="1577"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <view key="contentView" wantsLayer="YES" id="372" customClass="AVPlayerView">
                 <rect key="frame" x="0.0" y="0.0" width="509" height="360"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
