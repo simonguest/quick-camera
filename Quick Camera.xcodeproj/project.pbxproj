@@ -128,9 +128,8 @@
 				ORGANIZATIONNAME = "Simon Guest";
 				TargetAttributes = {
 					F4CBD39216B8CE5F003A4794 = {
-						DevelopmentTeam = JAX6TFJMYD;
+						DevelopmentTeam = KRZC59WTY9;
 						LastSwiftMigration = 1010;
-						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -286,11 +285,10 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = QCamera/QCamera.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = JAX6TFJMYD;
+				DEVELOPMENT_TEAM = KRZC59WTY9;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "QCamera/QCamera-Prefix.pch";
 				INFOPLIST_FILE = "QCamera/Quick Camera-Info.plist";
@@ -299,7 +297,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.simonguest.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "";
@@ -315,11 +312,10 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = QCamera/QCamera.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = JAX6TFJMYD;
+				DEVELOPMENT_TEAM = KRZC59WTY9;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "QCamera/QCamera-Prefix.pch";
 				INFOPLIST_FILE = "QCamera/Quick Camera-Info.plist";
@@ -328,7 +324,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.simonguest.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "";
