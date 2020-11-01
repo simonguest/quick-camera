@@ -30,6 +30,7 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
     var position = 0;
     
     var isBorderless: Bool = false;
+    var isAspectRatioFixed: Bool = false;
     var defaultBorderStyle: NSWindow.StyleMask = NSWindow.StyleMask.closable;
     var windowTitle = "Quick Camera";
     let defaultDeviceIndex: Int = 0;
@@ -38,6 +39,8 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
     var devices: [AVCaptureDevice]!;
     var captureSession: AVCaptureSession!;
     var captureLayer: AVCaptureVideoPreviewLayer!;
+    
+    var input: AVCaptureDeviceInput!;
 
     func errorMessage(message: String){
         let popup = NSAlert();
@@ -100,22 +103,26 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
         captureSession = AVCaptureSession();
         
         do {
-            let input: AVCaptureDeviceInput = try AVCaptureDeviceInput(device: device);
+            self.input = try AVCaptureDeviceInput(device: device);
             self.captureSession.addInput(input);
             self.captureSession.startRunning();
             self.captureLayer = AVCaptureVideoPreviewLayer(session: self.captureSession);
             self.captureLayer.connection?.automaticallyAdjustsVideoMirroring = false;
             self.captureLayer.connection?.isVideoMirrored = false;
+            
             self.playerView.layer = self.captureLayer;
             self.playerView.controlsStyle = AVPlayerViewControlsStyle.none;
             self.playerView.layer?.backgroundColor = CGColor.black;
             self.windowTitle = String(format: "Quick Camera: [%@]", device.localizedName);
             self.window.title = self.windowTitle;
+            fixAspectRatio();
         } catch {
             NSLog("Error while opening device");
             self.errorMessage(message: "Unfortunately, there was an error when trying to access the camera. Try again or select a different one.");
         }
     }
+    
+   
     
     @IBAction func mirrorHorizontally(_ sender: NSMenuItem) {
         NSLog("Mirror image menu item selected");
@@ -184,7 +191,7 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
     
     private func removeBorder() {
         defaultBorderStyle = window.styleMask;
-        self.window.styleMask = NSWindow.StyleMask.borderless;
+        self.window.styleMask = [NSWindow.StyleMask.borderless, NSWindow.StyleMask.resizable];
         self.window.level = convertToNSWindowLevel(Int(CGWindowLevelForKey(.maximumWindow)));
         window.isMovableByWindowBackground = true;
     }
@@ -198,7 +205,35 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
         } else {
             addBorder()
         }
+        fixAspectRatio();
+        
     }
+    
+    @IBAction func toggleFixAspectRatio(_ sender: NSMenuItem) {
+        isAspectRatioFixed = !isAspectRatioFixed;
+        sender.state = convertToNSControlStateValue((isAspectRatioFixed ? NSControl.StateValue.on.rawValue : NSControl.StateValue.off.rawValue));
+        fixAspectRatio();
+    }
+    
+    
+    
+    func fixAspectRatio() {
+        if isAspectRatioFixed, #available(OSX 10.15, *) {
+            let height = input.device.activeFormat.formatDescription.dimensions.height
+            let width = input.device.activeFormat.formatDescription.dimensions.width;
+            let size = NSMakeSize(CGFloat(width), CGFloat(height));
+            self.window.contentAspectRatio = size;
+            
+            let ratio = CGFloat(Float(width)/Float(height));
+            
+            var currentSize = self.window.contentLayoutRect.size;
+            currentSize.height = currentSize.width / ratio;
+            self.window.setContentSize(currentSize);
+        } else {
+            self.window.contentResizeIncrements = NSMakeSize(1.0,1.0);
+        }
+    }
+     
 
     @IBAction func saveImage(_ sender: NSMenuItem) {
         if (captureSession != nil){
