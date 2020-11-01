@@ -204,7 +204,7 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
         if (captureSession != nil){
             if #available(OSX 10.12, *) {
                 // turn borderless on, capture image, return border to previous state
-                let borderlessState = self.isBorderless
+                let borderlessState = self.isBorderless	
                 if (borderlessState == false) {
                     NSLog("Removing border");
                     self.removeBorder()

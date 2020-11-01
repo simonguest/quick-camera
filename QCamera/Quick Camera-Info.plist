@@ -17,21 +17,21 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.3.3</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.3.3</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.utilities</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>${MACOSX_DEPLOYMENT_TARGET}</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Quick Camera requires access to connected USB cameras in order to display the output on your screen.</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2013-2020 Simon Guest. All rights reserved.</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
-	<key>NSCameraUsageDescription</key>
-	<string>This app requires access to connected cameras in order to function correctly.</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 </dict>
