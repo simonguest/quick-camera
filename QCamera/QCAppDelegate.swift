@@ -292,6 +292,7 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
             input.device.activeFormat = largestFormat!;
         }
         
+        
         // TODO apply transformations
         
         stillImageOutput.captureStillImageAsynchronously(from: videoConnection) { [weak self] buffer, error in
@@ -307,15 +308,47 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
     }
     
     private func saveImageData(url: URL, withData data: Data) {
-        let image = NSImage(data: data as Data);
+        var image = NSImage(data: data as Data);
+        image = self.tranformImage(image: image!);
+
         if NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first != nil {
             // write image
             let success = image?.pngWrite(to: url, options: .withoutOverwriting);
-            NSLog(String(success!));
-            if (success! == true) {
+            if (success! != true) {
                 NSLog("Could not save still image from capture device")
             }
         }
+    }
+    
+    private func tranformImage (image: NSImage) -> NSImage {
+        // TODO deal with rotation
+        return self.flipImage(image: image, horizontal: isMirrored, vertical: isUpsideDown);
+    }
+    
+    public func flipImage(image: NSImage, horizontal: Bool, vertical: Bool) -> NSImage {
+        let existingSize: NSSize? = image.size
+        let newSize: NSSize? = NSMakeSize((existingSize?.width)!, (existingSize?.height)!)
+        let flipedImage = NSImage(size: newSize!)
+        flipedImage.lockFocus()
+        
+        if (horizontal) {
+            let transform = NSAffineTransform.init();
+            transform.translateX(by: (existingSize?.width)!, yBy: 0.0);
+            transform.scaleX(by: -1.0, yBy: 1.0);
+            transform.concat();
+        }
+        
+        if (vertical) {
+            let transform = NSAffineTransform.init();
+            transform.translateX(by: 0.0, yBy: (existingSize?.height)!);
+            transform.scaleX(by: 1.0, yBy: -1.0);
+            transform.concat();
+        }
+        
+        let rect:NSRect = NSMakeRect(0, 0, (newSize?.width)!, (newSize?.height)!)
+        image.draw(at: NSZeroPoint, from: rect, operation: .sourceOver, fraction: 1.0)
+        flipedImage.unlockFocus()
+        return flipedImage
     }
     
     /**
