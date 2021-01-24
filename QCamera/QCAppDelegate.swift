@@ -39,6 +39,7 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
     var devices: [AVCaptureDevice]!;
     var captureSession: AVCaptureSession!;
     var captureLayer: AVCaptureVideoPreviewLayer!;
+    var stillImageOutput: AVCaptureStillImageOutput?;
     
     var input: AVCaptureDeviceInput!;
 
@@ -115,7 +116,20 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
             self.playerView.layer?.backgroundColor = CGColor.black;
             self.windowTitle = String(format: "Quick Camera: [%@]", device.localizedName);
             self.window.title = self.windowTitle;
+            
             fixAspectRatio();
+            
+            let stillImageOutput = AVCaptureStillImageOutput();
+            stillImageOutput.outputSettings = [
+                AVVideoCodecKey: AVVideoCodecJPEG
+            ];
+            captureSession.sessionPreset = AVCaptureSession.Preset.photo;
+            if captureSession.canAddOutput(stillImageOutput) {
+                captureSession.addOutput(stillImageOutput);
+            }
+            captureSession.commitConfiguration();
+            
+            self.stillImageOutput = stillImageOutput;
         } catch {
             NSLog("Error while opening device");
             self.errorMessage(message: "Unfortunately, there was an error when trying to access the camera. Try again or select a different one.");
@@ -123,7 +137,6 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
     }
     
    
-    
     @IBAction func mirrorHorizontally(_ sender: NSMenuItem) {
         NSLog("Mirror image menu item selected");
         isMirrored = !isMirrored;
@@ -216,7 +229,6 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
     }
     
     
-    
     func fixAspectRatio() {
         if isAspectRatioFixed, #available(OSX 10.15, *) {
             let height = input.device.activeFormat.formatDescription.dimensions.height
@@ -238,45 +250,25 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
     @IBAction func saveImage(_ sender: NSMenuItem) {
         if (captureSession != nil){
             if #available(OSX 10.12, *) {
-                // turn borderless on, capture image, return border to previous state
-                let borderlessState = self.isBorderless	
-                if (borderlessState == false) {
-                    NSLog("Removing border");
-                    self.removeBorder()
-                }
-
                 /* Pause the RunLoop for 0.1 sec to let the window repaint after removing the border - I'm not a fan of this approach
                    but can't find another way to listen to an event for the window being updated. PRs welcome :) */
                 RunLoop.current.run(mode: .default, before: Date(timeIntervalSinceNow: 0.1))
 
-                let cgImage = CGWindowListCreateImage(CGRect.null, .optionIncludingWindow, CGWindowID(self.window.windowNumber), [.boundsIgnoreFraming, .bestResolution])
-
-                if (borderlessState == false){
-                    self.addBorder()
-                }
-
                 DispatchQueue.main.async {
-                    let now = Date()
-                    let dateFormatter = DateFormatter()
-                    dateFormatter.dateFormat = "yyyy-MM-dd"
-                    let date = dateFormatter.string(from: now)
-                    dateFormatter.dateFormat = "h.mm.ss a"
-                    let time = dateFormatter.string(from: now)
+                    let now = Date();
+                    let dateFormatter = DateFormatter();
+                    dateFormatter.dateFormat = "yyyy-MM-dd";
+                    let date = dateFormatter.string(from: now);
+                    dateFormatter.dateFormat = "h.mm.ss a";
+                    let time = dateFormatter.string(from: now);
 
                     let panel = NSSavePanel()
+                    panel.allowedFileTypes = ["png"];
                     panel.nameFieldStringValue = String(format: "Quick Camera Image %@ at %@.png", date, time)
                     panel.beginSheetModal(for: self.window) { (result) in
-                        if (result == NSApplication.ModalResponse.OK){
+                        if (result == NSApplication.ModalResponse.OK) {
                             NSLog(panel.url!.absoluteString)
-                            let destination = CGImageDestinationCreateWithURL(panel.url! as CFURL, kUTTypePNG, 1, nil)
-                            if (destination == nil)
-                            {
-                                NSLog("Could not write file - destination returned from CGImageDestinationCreateWithURL was nil");
-                                self.errorMessage(message: "Unfortunately, the image could not be saved to this location.")
-                            } else {
-                                CGImageDestinationAddImage(destination!, cgImage!, nil)
-                                CGImageDestinationFinalize(destination!)
-                            }
+                            self.grabStillImage(url: panel.url!);
                         }
                     }
                 }
@@ -287,6 +279,65 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
             }
         }
     }
+    
+    @objc private func grabStillImage(url: URL) {
+        guard let stillImageOutput = self.stillImageOutput, let videoConnection = stillImageOutput.connection(with: AVMediaType.video) else {
+            return;
+        }
+        
+        let activeFormat = input.device.activeFormat;
+        let largestFormat = self.getLargestFormat();
+        if (largestFormat != nil) {
+            try! input.device.lockForConfiguration()
+            input.device.activeFormat = largestFormat!;
+        }
+        
+        // TODO apply transformations
+        
+        stillImageOutput.captureStillImageAsynchronously(from: videoConnection) { [weak self] buffer, error in
+            let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(buffer!);
+            self?.saveImageData(url: url, withData: imageData!);
+        }
+        
+        // Reset to previously selected format
+        if (largestFormat != nil) {
+            input.device.activeFormat = activeFormat;
+            input.device.unlockForConfiguration()
+        }
+    }
+    
+    private func saveImageData(url: URL, withData data: Data) {
+        let image = NSImage(data: data as Data);
+        if NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first != nil {
+            // write image
+            let success = image?.pngWrite(to: url, options: .withoutOverwriting);
+            NSLog(String(success!));
+            if (success! == true) {
+                NSLog("Could not save still image from capture device")
+            }
+        }
+    }
+    
+    /**
+     * Returns the format which represents the largest image dimension for the active device,
+     * based on width.
+     */
+    private func getLargestFormat() -> AVCaptureDevice.Format? {
+        var largestFormat: AVCaptureDevice.Format?;
+        var largestWidth: CGFloat = 0;
+        for format in input.device.formats {
+            let dimensions = CMVideoFormatDescriptionGetDimensions(format.formatDescription);
+            let width = CGFloat(dimensions.width);
+            
+            if (width > largestWidth) {
+                largestWidth = width;
+                largestFormat = format;
+            }
+        }
+        
+        return largestFormat;
+    }
+    
     
     @objc func deviceMenuChanged(_ sender: NSMenuItem) {
         NSLog("Device Menu changed");
@@ -323,4 +374,20 @@ fileprivate func convertToNSControlStateValue(_ input: Int) -> NSControl.StateVa
 // Helper function inserted by Swift 4.2 migrator.
 fileprivate func convertToNSWindowLevel(_ input: Int) -> NSWindow.Level {
     NSWindow.Level(rawValue: input)
+}
+
+extension NSImage {
+    var pngData: Data? {
+        guard let tiffRepresentation = tiffRepresentation, let bitmapImage = NSBitmapImageRep(data: tiffRepresentation) else { return nil }
+        return bitmapImage.representation(using: .png, properties: [:])
+    }
+    func pngWrite(to url: URL, options: Data.WritingOptions = .atomic) -> Bool {
+        do {
+            try pngData?.write(to: url, options: options)
+            return true
+        } catch {
+            print(error)
+            return false
+        }
+    }
 }
