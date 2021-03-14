@@ -3,7 +3,7 @@
 //  Quick Camera
 //
 //  Created by Simon Guest on 1/22/17.
-//  Copyright © 2013-2020 Simon Guest. All rights reserved.
+//  Copyright © 2013-2021 Simon Guest. All rights reserved.
 //
 
 import Cocoa
@@ -198,6 +198,10 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
     
     @IBAction func borderless(_ sender: NSMenuItem) {
         NSLog("Borderless menu item selected");
+        if (self.window.styleMask.contains(.fullScreen)){
+            NSLog("Ignoring borderless command as window is full screen");
+            return;
+        }
         isBorderless = !isBorderless;
         sender.state = convertToNSControlStateValue((isBorderless ? NSControl.StateValue.on.rawValue : NSControl.StateValue.off.rawValue));
         if (isBorderless) {
@@ -209,13 +213,16 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
         
     }
     
+    @IBAction func enterFullScreen(_ sender: NSMenuItem) {
+        NSLog("Enter full screen menu item selected");
+        playerView.window?.toggleFullScreen(self);
+    }
+    
     @IBAction func toggleFixAspectRatio(_ sender: NSMenuItem) {
         isAspectRatioFixed = !isAspectRatioFixed;
         sender.state = convertToNSControlStateValue((isAspectRatioFixed ? NSControl.StateValue.on.rawValue : NSControl.StateValue.off.rawValue));
         fixAspectRatio();
     }
-    
-    
     
     func fixAspectRatio() {
         if isAspectRatioFixed, #available(OSX 10.15, *) {
@@ -236,6 +243,11 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
      
 
     @IBAction func saveImage(_ sender: NSMenuItem) {
+        if (self.window.styleMask.contains(.fullScreen)){
+            NSLog("Save is not supported as window is full screen");
+            return;
+        }
+        
         if (captureSession != nil){
             if #available(OSX 10.12, *) {
                 // turn borderless on, capture image, return border to previous state
