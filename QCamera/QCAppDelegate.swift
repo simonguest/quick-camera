@@ -39,6 +39,7 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
     var devices: [AVCaptureDevice]!;
     var captureSession: AVCaptureSession!;
     var captureLayer: AVCaptureVideoPreviewLayer!;
+	var cachedSavePath: URL? = nil;
     
     var input: AVCaptureDeviceInput!;
 
@@ -266,32 +267,44 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
                 if (borderlessState == false){
                     self.addBorder()
                 }
-
+				
+				let now = Date()
+				let dateFormatter = DateFormatter()
+				dateFormatter.dateFormat = "yyyy-MM-dd"
+				let date = dateFormatter.string(from: now)
+				dateFormatter.dateFormat = "h.mm.ss a"
+				let time = dateFormatter.string(from: now)
+				
                 DispatchQueue.main.async {
-                    let now = Date()
-                    let dateFormatter = DateFormatter()
-                    dateFormatter.dateFormat = "yyyy-MM-dd"
-                    let date = dateFormatter.string(from: now)
-                    dateFormatter.dateFormat = "h.mm.ss a"
-                    let time = dateFormatter.string(from: now)
-
-                    let panel = NSSavePanel()
-                    panel.nameFieldStringValue = String(format: "Quick Camera Image %@ at %@.png", date, time)
-                    panel.beginSheetModal(for: self.window) { (result) in
-                        if (result == NSApplication.ModalResponse.OK){
-                            NSLog(panel.url!.absoluteString)
-                            let destination = CGImageDestinationCreateWithURL(panel.url! as CFURL, kUTTypePNG, 1, nil)
-                            if (destination == nil)
-                            {
-                                NSLog("Could not write file - destination returned from CGImageDestinationCreateWithURL was nil");
-                                self.errorMessage(message: "Unfortunately, the image could not be saved to this location.")
-                            } else {
-                                CGImageDestinationAddImage(destination!, cgImage!, nil)
-                                CGImageDestinationFinalize(destination!)
-                            }
-                        }
-                    }
+					if self.cachedSavePath == nil{
+						let panel = NSOpenPanel()
+						panel.canChooseFiles = false
+						panel.canChooseDirectories = true
+						panel.beginSheetModal(for: self.window) { (result) in
+							if (result == NSApplication.ModalResponse.OK){
+								let filepath = panel.url!.appendingPathComponent(String(format: "QuickCamera_%@_ %@.png", date, time))
+								NSLog(filepath.absoluteString)
+								let destination = CGImageDestinationCreateWithURL(filepath as CFURL, kUTTypePNG, 1, nil)
+								if (destination == nil)
+								{
+									NSLog("Could not write file - destination returned from CGImageDestinationCreateWithURL was nil");
+									self.errorMessage(message: "Unfortunately, the image could not be saved to this location.")
+								} else {
+									self.cachedSavePath = filepath
+									CGImageDestinationAddImage(destination!, cgImage!, nil)
+									CGImageDestinationFinalize(destination!)
+								}
+							}
+						}
+					} else {
+						self.cachedSavePath!.deleteLastPathComponent()
+						self.cachedSavePath!.appendPathComponent(String(format: "QuickCamera_%@_ %@.png", date, time))
+						let destination = CGImageDestinationCreateWithURL(self.cachedSavePath! as CFURL, kUTTypePNG, 1, nil)
+						CGImageDestinationAddImage(destination!, cgImage!, nil)
+						CGImageDestinationFinalize(destination!)
+					}
                 }
+				
             } else {
                 let popup = NSAlert();
                 popup.messageText = "Unfortunately, saving images is only supported in Mac OSX 10.12 (Sierra) and higher.";
