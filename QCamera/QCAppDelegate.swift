@@ -290,14 +290,13 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
 									NSLog("Could not write file - destination returned from CGImageDestinationCreateWithURL was nil");
 									self.errorMessage(message: "Unfortunately, the image could not be saved to this location.")
 								} else {
-									self.cachedSavePath = filepath
+									self.cachedSavePath = panel.url!
 									CGImageDestinationAddImage(destination!, cgImage!, nil)
 									CGImageDestinationFinalize(destination!)
 								}
 							}
 						}
 					} else {
-						self.cachedSavePath!.deleteLastPathComponent()
 						self.cachedSavePath!.appendPathComponent(String(format: "QuickCamera_%@_ %@.png", date, time))
 						let destination = CGImageDestinationCreateWithURL(self.cachedSavePath! as CFURL, kUTTypePNG, 1, nil)
 						CGImageDestinationAddImage(destination!, cgImage!, nil)
