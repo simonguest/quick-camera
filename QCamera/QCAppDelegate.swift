@@ -21,7 +21,7 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
 
     @IBOutlet weak var window: NSWindow!
     @IBOutlet weak var selectSourceMenu: NSMenuItem!
-    @IBOutlet weak var playerView: AVPlayerView!
+    @IBOutlet weak var playerView: NSView!
     
     var isMirrored: Bool = false;
     var isUpsideDown: Bool = false;
@@ -111,7 +111,6 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
             self.captureLayer.connection?.isVideoMirrored = false;
             
             self.playerView.layer = self.captureLayer;
-            self.playerView.controlsStyle = AVPlayerViewControlsStyle.none;
             self.playerView.layer?.backgroundColor = CGColor.black;
             self.windowTitle = String(format: "Quick Camera: [%@]", device.localizedName);
             self.window.title = self.windowTitle;
