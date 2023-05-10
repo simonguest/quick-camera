@@ -8,7 +8,7 @@ You can find the app on the Mac App Store: https://itunes.apple.com/us/app/qcame
 
 License
 -------
-Copyright 2013-2021 Simon Guest
+Copyright 2013-2023 Simon Guest
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 
