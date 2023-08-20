@@ -31,7 +31,9 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
     
     var isBorderless: Bool = false;
     var isAspectRatioFixed: Bool = false;
+    var isAlwaysOnTop: Bool = false;
     var defaultBorderStyle: NSWindow.StyleMask = NSWindow.StyleMask.closable;
+    var defaultWindowLevel: NSWindow.Level = .normal;
     var windowTitle = "Quick Camera";
     let defaultDeviceIndex: Int = 0;
     var selectedDeviceIndex: Int = 0
@@ -195,6 +197,14 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
         window.isMovableByWindowBackground = true;
     }
     
+    private func enableAlwaysOnTop(){
+        self.window?.level = .floating;
+    }
+    
+    private func disableAlwaysOnTop() {
+        self.window?.level = defaultWindowLevel;
+    }
+    
     @IBAction func borderless(_ sender: NSMenuItem) {
         NSLog("Borderless menu item selected");
         if (self.window.styleMask.contains(.fullScreen)){
@@ -209,6 +219,19 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
             addBorder()
         }
         fixAspectRatio();
+        
+    }
+    
+    @IBAction func alwaysOnTop(_ sender: NSMenuItem) {
+        NSLog("alwaysOnTop menu item selected");
+
+        isAlwaysOnTop = !isAlwaysOnTop;
+        sender.state = convertToNSControlStateValue((isAlwaysOnTop ? NSControl.StateValue.on.rawValue : NSControl.StateValue.off.rawValue));
+        if (isAlwaysOnTop) {
+            enableAlwaysOnTop()
+        } else {
+            disableAlwaysOnTop()
+        }
         
     }
     
