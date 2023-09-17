@@ -8,7 +8,7 @@
 import IOKit
 import IOKit.usb
 import IOKit.usb.IOUSBLib
-public protocol QCUsbWatcherDelegate: class {
+public protocol QCUsbWatcherDelegate: AnyObject {
     func deviceCountChanged()
 }
 
