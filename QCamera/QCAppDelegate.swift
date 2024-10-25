@@ -239,7 +239,17 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
             self.window.contentResizeIncrements = NSMakeSize(1.0,1.0);
         }
     }
-     
+
+    @IBAction func fitToActualSize(_ sender: NSMenuItem) {
+        if true, #available(OSX 10.15, *) {
+            let height = input.device.activeFormat.formatDescription.dimensions.height
+            let width = input.device.activeFormat.formatDescription.dimensions.width
+            var currentSize = self.window.contentLayoutRect.size
+            currentSize.width = CGFloat(position % 2 == 0 ? width : height)
+            currentSize.height = CGFloat(position % 2 == 0 ? height : width)
+            self.window.setContentSize(currentSize)
+        }
+    }
 
     @IBAction func saveImage(_ sender: NSMenuItem) {
         if (self.window.styleMask.contains(.fullScreen)){
