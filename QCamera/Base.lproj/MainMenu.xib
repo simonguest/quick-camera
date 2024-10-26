@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="23094" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
+        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23094"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -128,6 +129,19 @@
                                 <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
                                 <connections>
                                     <action selector="enterFullScreen:" target="494" id="SVF-ca-TFE"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="YuD-fh-x4O"/>
+                            <menuItem title="Save Settings" id="fSo-F6-aJo">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="saveSettings:" target="-1" id="5XG-Ua-ecs"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Clear Settings" id="zGQ-Bh-Ak3">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="clearSettings:" target="-1" id="BAn-fb-0kQ"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="79">
@@ -399,8 +413,12 @@
         </window>
         <customObject id="494" customClass="QCAppDelegate" customModule="Quick_Camera">
             <connections>
+                <outlet property="aspectRatioFixedMenu" destination="eHX-9R-cym" id="GfZ-zt-Ngf"/>
+                <outlet property="borderlessMenu" destination="651" id="4dH-7A-gNz"/>
+                <outlet property="mirroredMenu" destination="78" id="tGe-Jf-YeE"/>
                 <outlet property="playerView" destination="372" id="tVX-fO-IZ2"/>
                 <outlet property="selectSourceMenu" destination="124" id="h5v-Cn-4oU"/>
+                <outlet property="upsideDownMenu" destination="658" id="Vs1-9X-1BU"/>
                 <outlet property="window" destination="371" id="fTI-Cc-re1"/>
             </connections>
         </customObject>
