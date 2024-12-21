@@ -31,17 +31,17 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
     var isUpsideDown: Bool = false;
     
     // 0 = normal, 1 = 90' top to right, 2 = 180' top to bottom, 3 = 270' top to left
-    var position = 0;
+    var position: Int = 0;
     
     var isBorderless: Bool = false;
     var isAspectRatioFixed: Bool = false;
     var defaultBorderStyle: NSWindow.StyleMask = NSWindow.StyleMask.closable;
-    var windowTitle = "Quick Camera";
+    var windowTitle: String = "Quick Camera";
     let defaultDeviceIndex: Int = 0;
     var selectedDeviceIndex: Int = 0
     
-    var deviceName = "-"
-    var savedDeviceName = "-"
+    var deviceName: String = "-"
+    var savedDeviceName: String = "-"
     var devices: [AVCaptureDevice]!;
     var captureSession: AVCaptureSession!;
     var captureLayer: AVCaptureVideoPreviewLayer!;
@@ -49,29 +49,16 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
     var input: AVCaptureDeviceInput!;
 
     func errorMessage(message: String){
-        let popup = NSAlert();
+        let popup: NSAlert = NSAlert();
         popup.messageText = message;
         popup.runModal();
     }
     
     func detectVideoDevices() {
         NSLog("Detecting video devices...");
-//        if #available(macOS 10.15, *) {
-//            var types: [AVCaptureDevice.DeviceType]
-//            if #available(macOS 14.0, *) {
-//                types = [AVCaptureDevice.DeviceType.builtInWideAngleCamera, AVCaptureDevice.DeviceType.continuityCamera, AVCaptureDevice.DeviceType.deskViewCamera, AVCaptureDevice.DeviceType.external]
-//            }else if #available(macOS 13.0, *) {
-//                types = [AVCaptureDevice.DeviceType.builtInWideAngleCamera, AVCaptureDevice.DeviceType.deskViewCamera]
-//            }else{
-//                types = [AVCaptureDevice.DeviceType.builtInWideAngleCamera]
-//            }
-//            let session = AVCaptureDevice.DiscoverySession.init(deviceTypes: types , mediaType: .video, position: .unspecified)
-//            self.devices = session.devices
-//        } else {
-            self.devices = AVCaptureDevice.devices(for: AVMediaType.video);
-//        }
+        self.devices = AVCaptureDevice.devices(for: AVMediaType.video);
         if (devices?.count == 0) {
-            let popup = NSAlert();
+            let popup: NSAlert = NSAlert();
             popup.messageText = "Unfortunately, you don't appear to have any cameras connected. Goodbye for now!";
             popup.runModal();
             NSApp.terminate(nil);
@@ -79,11 +66,11 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
             NSLog("%d devices found", devices?.count ?? 0);
         }
         
-        let deviceMenu = NSMenu();
-        var deviceIndex = 0;
+        let deviceMenu: NSMenu = NSMenu();
+        var deviceIndex: Int = 0;
 
         // Here we need to keep track of the current device (if selected) in order to keep it checked in the menu
-        var currentDevice = self.devices[defaultDeviceIndex]
+        var currentDevice: AVCaptureDevice = self.devices[defaultDeviceIndex]
         if(self.captureSession != nil) {
             currentDevice = (self.captureSession.inputs[0] as! AVCaptureDeviceInput).device
         }else{
@@ -92,8 +79,8 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
         }
         self.selectedDeviceIndex = defaultDeviceIndex
         
-        for device in self.devices {
-            let deviceMenuItem = NSMenuItem(title: device.localizedName, action: #selector(deviceMenuChanged), keyEquivalent: "")
+        for device: AVCaptureDevice in self.devices {
+            let deviceMenuItem: NSMenuItem = NSMenuItem(title: device.localizedName, action: #selector(deviceMenuChanged), keyEquivalent: "")
             deviceMenuItem.target = self;
             deviceMenuItem.representedObject = deviceIndex;
             if (device == currentDevice) {
@@ -116,7 +103,7 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
         if (captureSession != nil) {
             
             // if we are "restarting" a session but the device is the same exit early
-            let currentDevice = (self.captureSession.inputs[0] as! AVCaptureDeviceInput).device
+            let currentDevice: AVCaptureDevice = (self.captureSession.inputs[0] as! AVCaptureDeviceInput).device
             guard currentDevice != device else { return }
             
             captureSession.stopRunning();
@@ -167,13 +154,13 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
             self.removeBorder()
         }
         
-        let savedW = UserDefaults.standard.object(forKey: "frameW") as? Float ?? 0
-        let savedH = UserDefaults.standard.object(forKey: "frameH") as? Float ?? 0
+        let savedW: Float = UserDefaults.standard.object(forKey: "frameW") as? Float ?? 0
+        let savedH: Float = UserDefaults.standard.object(forKey: "frameH") as? Float ?? 0
         if 100 < savedW && 100 < savedH {
-            let savedX = UserDefaults.standard.object(forKey: "frameX") as? Float ?? 100
-            let savedY = UserDefaults.standard.object(forKey: "frameY") as? Float ?? 100
+            let savedX: Float = UserDefaults.standard.object(forKey: "frameX") as? Float ?? 100
+            let savedY: Float = UserDefaults.standard.object(forKey: "frameY") as? Float ?? 100
             NSLog("loaded : x:%f,y:%f,w:%f,h:%f", savedX, savedY, savedW, savedH)
-            var currentSize = self.window.contentLayoutRect.size
+            var currentSize: CGSize = self.window.contentLayoutRect.size
             currentSize.width = CGFloat(savedW)
             currentSize.height = CGFloat(savedH)
             self.window.setContentSize(currentSize)
@@ -211,7 +198,7 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
     }
     
     @IBAction func clearSettings(_ sender: NSMenuItem){
-        let appDomain = Bundle.main.bundleIdentifier
+        let appDomain: String? = Bundle.main.bundleIdentifier
         UserDefaults.standard.removePersistentDomain(forName: appDomain!)
     }
     
@@ -258,7 +245,7 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
     }
     
     func swapWH() {
-        var currentSize = self.window.contentLayoutRect.size
+        var currentSize: CGSize = self.window.contentLayoutRect.size
         swap(&currentSize.height, &currentSize.width)
         self.window.setContentSize(currentSize)
     }
@@ -327,13 +314,13 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
     
     func fixAspectRatio() {
         if isAspectRatioFixed, #available(OSX 10.15, *) {
-            let height = input.device.activeFormat.formatDescription.dimensions.height
-            let width = input.device.activeFormat.formatDescription.dimensions.width
-            let size = self.isLandscape() ? NSMakeSize(CGFloat(width), CGFloat(height)) : NSMakeSize(CGFloat(height), CGFloat(width))
+            let height: Int32 = input.device.activeFormat.formatDescription.dimensions.height
+            let width: Int32 = input.device.activeFormat.formatDescription.dimensions.width
+            let size: NSSize = self.isLandscape() ? NSMakeSize(CGFloat(width), CGFloat(height)) : NSMakeSize(CGFloat(height), CGFloat(width))
             self.window.contentAspectRatio = size;
             
-            let ratio = CGFloat(Float(width)/Float(height));
-            var currentSize = self.window.contentLayoutRect.size;
+            let ratio: CGFloat = CGFloat(Float(width)/Float(height));
+            var currentSize: CGSize = self.window.contentLayoutRect.size;
             if self.isLandscape() {
                 currentSize.height = currentSize.width / ratio
             }else{
@@ -348,9 +335,9 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
 
     @IBAction func fitToActualSize(_ sender: NSMenuItem) {
         if #available(OSX 10.15, *) {
-            let height = input.device.activeFormat.formatDescription.dimensions.height
-            let width = input.device.activeFormat.formatDescription.dimensions.width
-            var currentSize = self.window.contentLayoutRect.size
+            let height: Int32 = input.device.activeFormat.formatDescription.dimensions.height
+            let width: Int32 = input.device.activeFormat.formatDescription.dimensions.width
+            var currentSize: CGSize = self.window.contentLayoutRect.size
             currentSize.width = CGFloat(self.isLandscape() ? width : height)
             currentSize.height = CGFloat(self.isLandscape() ? height : width)
             self.window.setContentSize(currentSize)
@@ -366,7 +353,7 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
         if (captureSession != nil){
             if #available(OSX 10.12, *) {
                 // turn borderless on, capture image, return border to previous state
-                let borderlessState = self.isBorderless	
+                let borderlessState: Bool = self.isBorderless	
                 if (borderlessState == false) {
                     NSLog("Removing border");
                     self.removeBorder()
@@ -376,26 +363,26 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
                    but can't find another way to listen to an event for the window being updated. PRs welcome :) */
                 RunLoop.current.run(mode: .default, before: Date(timeIntervalSinceNow: 0.1))
 
-                let cgImage = CGWindowListCreateImage(CGRect.null, .optionIncludingWindow, CGWindowID(self.window.windowNumber), [.boundsIgnoreFraming, .bestResolution])
+                let cgImage: CGImage? = CGWindowListCreateImage(CGRect.null, .optionIncludingWindow, CGWindowID(self.window.windowNumber), [.boundsIgnoreFraming, .bestResolution])
 
                 if (borderlessState == false){
                     self.addBorder()
                 }
 
                 DispatchQueue.main.async {
-                    let now = Date()
-                    let dateFormatter = DateFormatter()
+                    let now: Date = Date()
+                    let dateFormatter: DateFormatter = DateFormatter()
                     dateFormatter.dateFormat = "yyyy-MM-dd"
-                    let date = dateFormatter.string(from: now)
+                    let date: String = dateFormatter.string(from: now)
                     dateFormatter.dateFormat = "h.mm.ss a"
-                    let time = dateFormatter.string(from: now)
+                    let time: String = dateFormatter.string(from: now)
 
-                    let panel = NSSavePanel()
+                    let panel: NSSavePanel = NSSavePanel()
                     panel.nameFieldStringValue = String(format: "Quick Camera Image %@ at %@.png", date, time)
-                    panel.beginSheetModal(for: self.window) { (result) in
+                    panel.beginSheetModal(for: self.window) { (result: NSApplication.ModalResponse) in
                         if (result == NSApplication.ModalResponse.OK){
                             NSLog(panel.url!.absoluteString)
-                            let destination = CGImageDestinationCreateWithURL(panel.url! as CFURL, kUTTypePNG, 1, nil)
+                            let destination: CGImageDestination? = CGImageDestinationCreateWithURL(panel.url! as CFURL, kUTTypePNG, 1, nil)
                             if (destination == nil)
                             {
                                 NSLog("Could not write file - destination returned from CGImageDestinationCreateWithURL was nil");
@@ -408,7 +395,7 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
                     }
                 }
             } else {
-                let popup = NSAlert();
+                let popup: NSAlert = NSAlert();
                 popup.messageText = "Unfortunately, saving images is only supported in Mac OSX 10.12 (Sierra) and higher.";
                 popup.runModal();
             }

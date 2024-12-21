@@ -29,7 +29,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Quick Camera requires access to connected USB cameras in order to display the output on your screen.</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2013-2021 Simon Guest. All rights reserved.</string>
+	<string>Copyright © 2025 Simon Guest. All rights reserved.</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
