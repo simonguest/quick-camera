@@ -14,14 +14,14 @@ public protocol QCUsbWatcherDelegate: AnyObject {
 
 public class QCUsbWatcher {
     public weak var delegate: QCUsbWatcherDelegate?
-    private let notificationPort = IONotificationPortCreate(kIOMasterPortDefault)
+    private let notificationPort: IONotificationPortRef? = IONotificationPortCreate(kIOMasterPortDefault)
     private var addedIterator: io_iterator_t = 0
     private var removedIterator: io_iterator_t = 0
     
     public init() {
         func handleNotification(instance: UnsafeMutableRawPointer?, _ iterator: io_iterator_t) {
-            let watcher = Unmanaged<QCUsbWatcher>.fromOpaque(instance!).takeUnretainedValue()
-            while case let device = IOIteratorNext(iterator), device != IO_OBJECT_NULL {
+            let watcher: QCUsbWatcher = Unmanaged<QCUsbWatcher>.fromOpaque(instance!).takeUnretainedValue()
+            while case let device: io_object_t = IOIteratorNext(iterator), device != IO_OBJECT_NULL {
                 
                 //give the OS a bit of time to finish setting up capture devices
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -31,8 +31,8 @@ public class QCUsbWatcher {
             }
         }
     
-        let query = IOServiceMatching(kIOUSBDeviceClassName)
-        let opaqueSelf = Unmanaged.passUnretained(self).toOpaque()
+        let query: CFMutableDictionary? = IOServiceMatching(kIOUSBDeviceClassName)
+        let opaqueSelf: UnsafeMutableRawPointer = Unmanaged.passUnretained(self).toOpaque()
         
         // Watch for connected devices.
         IOServiceAddMatchingNotification(
@@ -60,7 +60,7 @@ public class QCUsbWatcher {
     }
     
     fileprivate func consumeInitialUSBEvents(_ iterator: io_iterator_t) {
-        while case let device = IOIteratorNext(iterator), device != IO_OBJECT_NULL {
+        while case let device: io_object_t   = IOIteratorNext(iterator), device != IO_OBJECT_NULL {
             IOObjectRelease(device)
         }
     }
