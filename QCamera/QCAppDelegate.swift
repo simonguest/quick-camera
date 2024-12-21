@@ -1,11 +1,3 @@
-//
-//  AppDelegate.swift
-//  Quick Camera
-//
-//  Created by Simon Guest on 1/22/17.
-//  Copyright © 2013-2021 Simon Guest. All rights reserved.
-//
-
 import Cocoa
 import AVKit
 import AVFoundation

@@ -1,10 +1,3 @@
-//
-//  QCUsbWatcher.swift
-//  Quick Camera
-//
-//  Created by Ross Beazley on 07/08/2020.
-//  Copyright © 2020 Simon Guest. All rights reserved.
-//
 import IOKit
 import IOKit.usb
 import IOKit.usb.IOUSBLib
