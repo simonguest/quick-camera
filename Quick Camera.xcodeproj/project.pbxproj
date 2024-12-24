@@ -10,6 +10,7 @@
 		87673A631E35C97A002ECF15 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87673A621E35C97A002ECF15 /* AVFoundation.framework */; };
 		87FF95021E355CDB0017DADB /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87FF95011E355CDB0017DADB /* AVKit.framework */; };
 		87FF95201E35B7CE0017DADB /* QCAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FF951F1E35B7CE0017DADB /* QCAppDelegate.swift */; };
+		F435396A2D1B1B86002188A0 /* QCSettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43539692D1B1B85002188A0 /* QCSettingsManager.swift */; };
 		F43D252B16BB508900CBC272 /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = F43D252A16BB508900CBC272 /* icon.icns */; };
 		F4CBD39716B8CE5F003A4794 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4CBD39616B8CE5F003A4794 /* Cocoa.framework */; };
 		F4CBD3AD16B8CE5F003A4794 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4CBD3AB16B8CE5F003A4794 /* MainMenu.xib */; };
@@ -22,6 +23,7 @@
 		87FF951F1E35B7CE0017DADB /* QCAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QCAppDelegate.swift; sourceTree = "<group>"; };
 		87FF95211E35BA3B0017DADB /* Quick Camera-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Quick Camera-Info.plist"; sourceTree = "<group>"; };
 		F40A9A182AB7BC630082BBC6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		F43539692D1B1B85002188A0 /* QCSettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QCSettingsManager.swift; sourceTree = "<group>"; };
 		F43D252A16BB508900CBC272 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
 		F43D252C16BB703100CBC272 /* QCamera.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = QCamera.entitlements; sourceTree = "<group>"; };
 		F4CBD39316B8CE5F003A4794 /* Quick Camera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Quick Camera.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -88,6 +90,7 @@
 		F4CBD39C16B8CE5F003A4794 /* QCamera */ = {
 			isa = PBXGroup;
 			children = (
+				F43539692D1B1B85002188A0 /* QCSettingsManager.swift */,
 				87FF95211E35BA3B0017DADB /* Quick Camera-Info.plist */,
 				87FF951F1E35B7CE0017DADB /* QCAppDelegate.swift */,
 				F43D252C16BB703100CBC272 /* QCamera.entitlements */,
@@ -171,6 +174,7 @@
 			files = (
 				87FF95201E35B7CE0017DADB /* QCAppDelegate.swift in Sources */,
 				F952D6E324E15A6200EA786D /* QCUsbWatcher.swift in Sources */,
+				F435396A2D1B1B86002188A0 /* QCSettingsManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

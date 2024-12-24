@@ -19,20 +19,36 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
     @IBOutlet weak var upsideDownMenu: NSMenuItem!
     @IBOutlet weak var playerView: NSView!
     
-    var isMirrored: Bool = false;
-    var isUpsideDown: Bool = false;
+    var isMirrored: Bool {
+        get { QCSettingsManager.shared.isMirrored }
+        set { QCSettingsManager.shared.setMirrored(newValue) }
+    }
+    var isUpsideDown: Bool {
+        get { QCSettingsManager.shared.isUpsideDown }
+        set { QCSettingsManager.shared.setUpsideDown(newValue) }
+    }
+    var position: Int {
+        get { QCSettingsManager.shared.position }
+        set { QCSettingsManager.shared.setPosition(newValue) }
+    }
+    var isBorderless: Bool {
+        get { QCSettingsManager.shared.isBorderless }
+        set { QCSettingsManager.shared.setBorderless(newValue) }
+    }
+    var isAspectRatioFixed: Bool {
+        get { QCSettingsManager.shared.isAspectRatioFixed }
+        set { QCSettingsManager.shared.setAspectRatioFixed(newValue) }
+    }
+    var deviceName: String {
+        get { QCSettingsManager.shared.deviceName }
+        set { QCSettingsManager.shared.setDeviceName(newValue) }
+    }
     
-    // 0 = normal, 1 = 90' top to right, 2 = 180' top to bottom, 3 = 270' top to left
-    var position: Int = 0;
-    
-    var isBorderless: Bool = false;
-    var isAspectRatioFixed: Bool = false;
     var defaultBorderStyle: NSWindow.StyleMask = NSWindow.StyleMask.closable;
     var windowTitle: String = "Quick Camera";
     let defaultDeviceIndex: Int = 0;
     var selectedDeviceIndex: Int = 0
     
-    var deviceName: String = "-"
     var savedDeviceName: String = "-"
     var devices: [AVCaptureDevice]!;
     var captureSession: AVCaptureSession!;
@@ -123,34 +139,21 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
     }
 
     func logSettings(label: String){
-        NSLog("%@ : %@,%@,%@borderless,%@mirrored,%@upsideDown,%@aspectRetioFixed,position:%d",
-              label, self.deviceName, self.savedDeviceName,
-              self.isBorderless ? "+" : "-",
-              self.isMirrored ? "+" : "-",
-              self.isUpsideDown ? "+" : "-",
-              self.isAspectRatioFixed ? "+" : "-",
-              self.position)
+        QCSettingsManager.shared.logSettings(label: label)
     }
     
     func loadSettings(){
-        self.logSettings(label: "before loadSettings")
-        
-        self.savedDeviceName = UserDefaults.standard.object(forKey: "deviceName") as? String ?? ""
-        self.isBorderless = UserDefaults.standard.object(forKey: "borderless") as? Bool ?? false
-        self.isMirrored = UserDefaults.standard.object(forKey: "mirrored") as? Bool ?? false
-        self.isUpsideDown = UserDefaults.standard.object(forKey: "upsideDown") as? Bool ?? false
-        self.isAspectRatioFixed = UserDefaults.standard.object(forKey: "aspectRatioFixed") as? Bool ?? false
-        self.position = UserDefaults.standard.object(forKey: "position") as? Int ?? 0
+        QCSettingsManager.shared.loadSettings()
         
         if (self.isBorderless) {
             self.removeBorder()
         }
         
-        let savedW: Float = UserDefaults.standard.object(forKey: "frameW") as? Float ?? 0
-        let savedH: Float = UserDefaults.standard.object(forKey: "frameH") as? Float ?? 0
+        let savedW = QCSettingsManager.shared.frameWidth
+        let savedH = QCSettingsManager.shared.frameHeight
         if 100 < savedW && 100 < savedH {
-            let savedX: Float = UserDefaults.standard.object(forKey: "frameX") as? Float ?? 100
-            let savedY: Float = UserDefaults.standard.object(forKey: "frameY") as? Float ?? 100
+            let savedX = QCSettingsManager.shared.frameX
+            let savedY = QCSettingsManager.shared.frameY
             NSLog("loaded : x:%f,y:%f,w:%f,h:%f", savedX, savedY, savedW, savedH)
             var currentSize: CGSize = self.window.contentLayoutRect.size
             currentSize.width = CGFloat(savedW)
@@ -158,12 +161,10 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
             self.window.setContentSize(currentSize)
             self.window.setFrameOrigin(NSPoint(x: CGFloat(savedX), y: CGFloat(savedY)))
         }
-        
-        self.logSettings(label: "after loadSettings")
     }
     
     func applySettings(){
-        self.logSettings(label: "applySettings")
+        QCSettingsManager.shared.logSettings(label: "applySettings")
         
         self.setRotation(self.position)
         self.captureLayer.connection?.isVideoMirrored = isMirrored
@@ -176,22 +177,17 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
     }
     
     @IBAction func saveSettings(_ sender: NSMenuItem){
-        self.logSettings(label: "saveSettings")
-        UserDefaults.standard.set(self.deviceName, forKey: "deviceName")
-        UserDefaults.standard.set(self.isBorderless, forKey: "borderless")
-        UserDefaults.standard.set(self.isMirrored, forKey: "mirrored")
-        UserDefaults.standard.set(self.isUpsideDown, forKey: "upsideDown")
-        UserDefaults.standard.set(self.isAspectRatioFixed, forKey: "aspectRatioFixed")
-        UserDefaults.standard.set(self.position, forKey: "position")
-        UserDefaults.standard.set(self.window.frame.minX, forKey: "frameX")
-        UserDefaults.standard.set(self.window.frame.minY, forKey: "frameY")
-        UserDefaults.standard.set(self.window.frame.width, forKey: "frameW")
-        UserDefaults.standard.set(self.window.frame.height, forKey: "frameH")
+        QCSettingsManager.shared.setFrameProperties(
+            x: Float(self.window.frame.minX),
+            y: Float(self.window.frame.minY),
+            width: Float(self.window.frame.width),
+            height: Float(self.window.frame.height)
+        )
+        QCSettingsManager.shared.saveSettings()
     }
     
     @IBAction func clearSettings(_ sender: NSMenuItem){
-        let appDomain: String? = Bundle.main.bundleIdentifier
-        UserDefaults.standard.removePersistentDomain(forName: appDomain!)
+        QCSettingsManager.shared.clearSettings()
     }
     
     @IBAction func mirrorHorizontally(_ sender: NSMenuItem) {
