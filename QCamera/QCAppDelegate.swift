@@ -2,15 +2,18 @@ import Cocoa
 import AVKit
 import AVFoundation
 
+// MARK: - QCAppDelegate Class
 @NSApplicationMain
 class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
 
+    // MARK: - USB Watcher
     let usb = QCUsbWatcher()
     func deviceCountChanged() {
         self.detectVideoDevices()
         self.startCaptureWithVideoDevice(defaultDevice: selectedDeviceIndex)
     }
 
+    // MARK: - Interface Builder Outlets
     @IBOutlet weak var window: NSWindow!
     @IBOutlet weak var selectSourceMenu: NSMenuItem!
     @IBOutlet weak var borderlessMenu: NSMenuItem!
@@ -19,6 +22,7 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
     @IBOutlet weak var upsideDownMenu: NSMenuItem!
     @IBOutlet weak var playerView: NSView!
     
+    // MARK: - Settings Properties
     var isMirrored: Bool {
         get { QCSettingsManager.shared.isMirrored }
         set { QCSettingsManager.shared.setMirrored(newValue) }
@@ -44,6 +48,7 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
         set { QCSettingsManager.shared.setDeviceName(newValue) }
     }
     
+    // MARK: - Window Properties
     var defaultBorderStyle: NSWindow.StyleMask = NSWindow.StyleMask.closable;
     var windowTitle: String = "Quick Camera";
     let defaultDeviceIndex: Int = 0;
@@ -56,12 +61,14 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
     
     var input: AVCaptureDeviceInput!;
 
+    // MARK: - Error Handling
     func errorMessage(message: String){
         let popup: NSAlert = NSAlert();
         popup.messageText = message;
         popup.runModal();
     }
     
+    // MARK: - Device Management
     func detectVideoDevices() {
         NSLog("Detecting video devices...");
         self.devices = AVCaptureDevice.devices(for: AVMediaType.video);
@@ -138,6 +145,7 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
         }
     }
 
+    // MARK: - Settings Management
     func logSettings(label: String){
         QCSettingsManager.shared.logSettings(label: label)
     }
@@ -176,6 +184,7 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
         self.aspectRatioFixedMenu.state = convertToNSControlStateValue((isAspectRatioFixed ? NSControl.StateValue.on.rawValue : NSControl.StateValue.off.rawValue))
     }
     
+    // MARK: - Settings Actions
     @IBAction func saveSettings(_ sender: NSMenuItem){
         QCSettingsManager.shared.setFrameProperties(
             x: Float(self.window.frame.minX),
@@ -190,6 +199,7 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
         QCSettingsManager.shared.clearSettings()
     }
     
+    // MARK: - Display Actions
     @IBAction func mirrorHorizontally(_ sender: NSMenuItem) {
         NSLog("Mirror image menu item selected");
         isMirrored = !isMirrored;
@@ -254,6 +264,7 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
         self.applySettings()
     }
         
+    // MARK: - Display Helpers
     private func addBorder(){
         window.styleMask = defaultBorderStyle;
         window.title = self.windowTitle;
@@ -390,6 +401,7 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
         }
     }
     
+    // MARK: - Device Menu Actions
     @objc func deviceMenuChanged(_ sender: NSMenuItem) {
         NSLog("Device Menu changed");
         if (sender.state == NSControl.StateValue.on) {
@@ -406,6 +418,7 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
         self.startCaptureWithVideoDevice(defaultDevice: sender.representedObject as! Int)
     }
     
+    // MARK: - Application Lifecycle
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         detectVideoDevices();
         startCaptureWithVideoDevice(defaultDevice: defaultDeviceIndex);
@@ -417,6 +430,7 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
     }
 }
 
+// MARK: - Helper Functions
 // Helper function inserted by Swift 4.2 migrator.
 fileprivate func convertToNSControlStateValue(_ input: Int) -> NSControl.StateValue {
     NSControl.StateValue(rawValue: input)
