@@ -11,16 +11,18 @@ public protocol QCUsbWatcherDelegate: AnyObject {
 public class QCUsbWatcher {
     // MARK: - Properties
     public weak var delegate: QCUsbWatcherDelegate?
-    private let notificationPort: IONotificationPortRef? = IONotificationPortCreate(kIOMasterPortDefault)
+    private let notificationPort: IONotificationPortRef? = IONotificationPortCreate(
+        kIOMainPortDefault)
     private var addedIterator: io_iterator_t = 0
     private var removedIterator: io_iterator_t = 0
-    
+
     // MARK: - Initialization
     public init() {
         func handleNotification(instance: UnsafeMutableRawPointer?, _ iterator: io_iterator_t) {
-            let watcher: QCUsbWatcher = Unmanaged<QCUsbWatcher>.fromOpaque(instance!).takeUnretainedValue()
-            while case let device: io_object_t = IOIteratorNext(iterator), device != IO_OBJECT_NULL {
-                
+            let watcher: QCUsbWatcher = Unmanaged<QCUsbWatcher>.fromOpaque(instance!)
+                .takeUnretainedValue()
+            while case let device:io_object_t = IOIteratorNext(iterator), device != IO_OBJECT_NULL {
+
                 //give the OS a bit of time to finish setting up capture devices
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     watcher.delegate?.deviceCountChanged()
@@ -28,10 +30,10 @@ public class QCUsbWatcher {
                 IOObjectRelease(device)
             }
         }
-    
+
         let query: CFMutableDictionary? = IOServiceMatching(kIOUSBDeviceClassName)
         let opaqueSelf: UnsafeMutableRawPointer = Unmanaged.passUnretained(self).toOpaque()
-        
+
         // Watch for connected devices.
         IOServiceAddMatchingNotification(
             notificationPort, kIOMatchedNotification, query,
@@ -43,7 +45,7 @@ public class QCUsbWatcher {
             notificationPort, kIOTerminatedNotification, query,
             handleNotification, opaqueSelf, &removedIterator)
         consumeInitialUSBEvents(removedIterator)
-        
+
         // Add the notification to the main run loop to receive future updates.
         CFRunLoopAddSource(
             CFRunLoopGetMain(),
@@ -57,10 +59,10 @@ public class QCUsbWatcher {
         IOObjectRelease(removedIterator)
         IONotificationPortDestroy(notificationPort)
     }
-    
+
     // MARK: - Private Methods
     fileprivate func consumeInitialUSBEvents(_ iterator: io_iterator_t) {
-        while case let device: io_object_t   = IOIteratorNext(iterator), device != IO_OBJECT_NULL {
+        while case let device:io_object_t = IOIteratorNext(iterator), device != IO_OBJECT_NULL {
             IOObjectRelease(device)
         }
     }

@@ -384,7 +384,8 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
                     panel.beginSheetModal(for: self.window) { (result: NSApplication.ModalResponse) in
                         if (result == NSApplication.ModalResponse.OK){
                             NSLog(panel.url!.absoluteString)
-                            let destination: CGImageDestination? = CGImageDestinationCreateWithURL(panel.url! as CFURL, kUTTypePNG, 1, nil)
+                            let destination: CGImageDestination? = CGImageDestinationCreateWithURL(
+                                panel.url! as CFURL, UTType.png.identifier as CFString, 1, nil)
                             if (destination == nil)
                             {
                                 NSLog("Could not write file - destination returned from CGImageDestinationCreateWithURL was nil");
