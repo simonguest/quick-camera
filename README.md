@@ -6,6 +6,24 @@ Quick Camera supports mirroring (normal and reversed, both vertical and horizont
 
 You can find the app on the Mac App Store: https://itunes.apple.com/us/app/qcamera/id598853070?mt=12
 
+## Building Quick Camera
+
+Quick Camera can be built using XCode. Download XCode from https://developer.apple.com/xcode/ and open the Quick Camera.xcodeproj file.
+
+In addition, with XCode or the XCode Command Line Tools installed, Quick Camera can also be built using the command line:
+
+```bash
+xcodebuild -scheme Quick\ Camera -configuration Release clean build
+```
+
+Upon successful build, Quick Camera can be launched with:
+
+```bash
+open build/release/Quick\ Camera.app
+```
+
+Finally, a Package.swift file is included for building Quick Camera using Swift Package Manager. This, however, is designed only to support editing Quick Camera in VS Code (via the Swift Language Support extension and LSP).
+
 License
 -------
 Copyright 2025 Simon Guest and others (see contributors)
