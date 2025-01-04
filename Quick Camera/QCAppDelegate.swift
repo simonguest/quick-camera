@@ -7,7 +7,7 @@ import Cocoa
 class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
 
     // MARK: - USB Watcher
-    let usb = QCUsbWatcher()
+    let usb: QCUsbWatcher = QCUsbWatcher()
     func deviceCountChanged() {
         self.detectVideoDevices()
         self.startCaptureWithVideoDevice(defaultDevice: selectedDeviceIndex)

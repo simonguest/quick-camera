@@ -18,7 +18,7 @@ class QCSettingsManager {
     private(set) var frameHeight: Float = 0
 
     // MARK: - Singleton
-    static let shared = QCSettingsManager()
+    static let shared: QCSettingsManager = QCSettingsManager()
 
     private init() {
         loadSettings()

@@ -25,7 +25,7 @@
 		F40A9A182AB7BC630082BBC6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		F43539692D1B1B85002188A0 /* QCSettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QCSettingsManager.swift; sourceTree = "<group>"; };
 		F43D252A16BB508900CBC272 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
-		F43D252C16BB703100CBC272 /* QCamera.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = QCamera.entitlements; sourceTree = "<group>"; };
+		F43D252C16BB703100CBC272 /* Quick Camera.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Quick Camera.entitlements"; sourceTree = "<group>"; };
 		F4CBD39316B8CE5F003A4794 /* Quick Camera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Quick Camera.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4CBD39616B8CE5F003A4794 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		F4CBD39916B8CE5F003A4794 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -52,7 +52,7 @@
 			isa = PBXGroup;
 			children = (
 				F43D252A16BB508900CBC272 /* icon.icns */,
-				F4CBD39C16B8CE5F003A4794 /* QCamera */,
+				F4CBD39C16B8CE5F003A4794 /* Quick Camera */,
 				F4CBD39516B8CE5F003A4794 /* Frameworks */,
 				F4CBD39416B8CE5F003A4794 /* Products */,
 			);
@@ -87,17 +87,17 @@
 			name = "Other Frameworks";
 			sourceTree = "<group>";
 		};
-		F4CBD39C16B8CE5F003A4794 /* QCamera */ = {
+		F4CBD39C16B8CE5F003A4794 /* Quick Camera */ = {
 			isa = PBXGroup;
 			children = (
 				F43539692D1B1B85002188A0 /* QCSettingsManager.swift */,
 				87FF95211E35BA3B0017DADB /* Quick Camera-Info.plist */,
 				87FF951F1E35B7CE0017DADB /* QCAppDelegate.swift */,
-				F43D252C16BB703100CBC272 /* QCamera.entitlements */,
+				F43D252C16BB703100CBC272 /* Quick Camera.entitlements */,
 				F4CBD3AB16B8CE5F003A4794 /* MainMenu.xib */,
 				F952D6E224E15A6200EA786D /* QCUsbWatcher.swift */,
 			);
-			path = QCamera;
+			path = "Quick Camera";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -297,9 +297,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = QCamera/QCamera.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "Quick Camera/Quick Camera.entitlements";
 				CODE_SIGN_IDENTITY = "Mac Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1.5;
 				DEAD_CODE_STRIPPING = YES;
@@ -307,7 +307,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "QCamera/QCamera-Prefix.pch";
-				INFOPLIST_FILE = "QCamera/Quick Camera-Info.plist";
+				INFOPLIST_FILE = "Quick Camera/Quick Camera-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -331,9 +331,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = QCamera/QCamera.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "Quick Camera/Quick Camera.entitlements";
 				CODE_SIGN_IDENTITY = "Mac Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1.5;
 				DEAD_CODE_STRIPPING = YES;
@@ -341,7 +341,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "QCamera/QCamera-Prefix.pch";
-				INFOPLIST_FILE = "QCamera/Quick Camera-Info.plist";
+				INFOPLIST_FILE = "Quick Camera/Quick Camera-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",

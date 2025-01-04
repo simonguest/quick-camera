@@ -2,26 +2,26 @@
 import PackageDescription
 
 let package = Package(
-    name: "QCamera",
+    name: "Quick Camera",
     defaultLocalization: "en",
     platforms: [
         .macOS(.v12)
     ],
     products: [
         .executable(
-            name: "QCamera",
-            targets: ["QCamera"]
+            name: "Quick Camera",
+            targets: ["Quick Camera"]
         )
     ],
     dependencies: [],
     targets: [
         .executableTarget(
-            name: "QCamera",
-            path: "QCamera",
+            name: "Quick Camera",
+            path: "Quick Camera",
             sources: [
                 "QCAppDelegate.swift",
                 "QCSettingsManager.swift",
-                "QCUsbWatcher.swift"
+                "QCUsbWatcher.swift",
             ]
         )
     ]
