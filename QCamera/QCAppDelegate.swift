@@ -71,14 +71,17 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
     // MARK: - Device Management
     func detectVideoDevices() {
         NSLog("Detecting video devices...");
-        self.devices = AVCaptureDevice.devices(for: AVMediaType.video);
-        if (devices?.count == 0) {
+        let discoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera, .externalUnknown],
+                                                              mediaType: .video,
+                                                              position: .unspecified)
+        self.devices = discoverySession.devices
+        if devices.isEmpty {
             let popup: NSAlert = NSAlert();
             popup.messageText = "Unfortunately, you don't appear to have any cameras connected. Goodbye for now!";
             popup.runModal();
             NSApp.terminate(nil);
         } else {
-            NSLog("%d devices found", devices?.count ?? 0);
+            NSLog("%d devices found", devices.count);
         }
         
         let deviceMenu: NSMenu = NSMenu();
