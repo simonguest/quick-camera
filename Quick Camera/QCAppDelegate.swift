@@ -2,6 +2,62 @@ import AVFoundation
 import AVKit
 import Cocoa
 
+private let kShowResolutionOptions = "showCameraResolutionOptions"
+
+// MARK: - Preferences
+
+class QCPreferencesViewController: NSViewController {
+
+    var onChange: (() -> Void)?
+
+    private let checkbox = NSButton(
+        checkboxWithTitle: "Show camera resolution options",
+        target: nil,
+        action: nil
+    )
+
+    override func loadView() {
+        let container = NSView(frame: NSRect(x: 0, y: 0, width: 340, height: 80))
+        checkbox.translatesAutoresizingMaskIntoConstraints = false
+        checkbox.target = self
+        checkbox.action = #selector(checkboxChanged(_:))
+        checkbox.state = UserDefaults.standard.bool(forKey: kShowResolutionOptions) ? .on : .off
+        container.addSubview(checkbox)
+        NSLayoutConstraint.activate([
+            checkbox.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+            checkbox.centerYAnchor.constraint(equalTo: container.centerYAnchor),
+        ])
+        self.view = container
+    }
+
+    @objc private func checkboxChanged(_ sender: NSButton) {
+        UserDefaults.standard.set(sender.state == .on, forKey: kShowResolutionOptions)
+        onChange?()
+    }
+}
+
+class QCPreferencesWindowController: NSWindowController {
+
+    convenience init() {
+        let vc = QCPreferencesViewController()
+        let window = NSWindow(contentViewController: vc)
+        window.title = "Preferences"
+        window.styleMask = [.titled, .closable]
+        window.setContentSize(NSSize(width: 340, height: 80))
+        window.center()
+        self.init(window: window)
+    }
+
+    var preferencesViewController: QCPreferencesViewController? {
+        return contentViewController as? QCPreferencesViewController
+    }
+
+    override func showWindow(_ sender: Any?) {
+        window?.center()
+        super.showWindow(sender)
+    }
+}
+
 // MARK: - QCAppDelegate Class
 @NSApplicationMain
 class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
@@ -112,9 +168,16 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
             if deviceIndex < 9 {
                 deviceMenuItem.keyEquivalent = String(deviceIndex + 1)
             }
+
+            // Add resolution change submenu only if enabled in Preferences
+            if UserDefaults.standard.bool(forKey: kShowResolutionOptions) {
+                addResolutionsTo(menuItem: deviceMenuItem, forDevice: device)
+            }
+
             deviceMenu.addItem(deviceMenuItem)
             deviceIndex += 1
         }
+
         selectSourceMenu.submenu = deviceMenu
     }
 
@@ -472,6 +535,104 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         true
     }
+
+    // MARK: Resolutions
+
+    var selectedSourceResolution: Int = -1
+    var preferencesWindowController: QCPreferencesWindowController?
+
+    // MARK: Preferences
+
+    @IBAction func openPreferences(_ sender: Any?) {
+        if preferencesWindowController == nil {
+            preferencesWindowController = QCPreferencesWindowController()
+            // Rebuild the device menu immediately whenever the checkbox is toggled
+            preferencesWindowController?.preferencesViewController?.onChange = { [weak self] in
+                self?.detectVideoDevices()
+            }
+        }
+        preferencesWindowController?.showWindow(self)
+        NSApp.activate(ignoringOtherApps: true)
+    }
+
+    @objc func sourceResolutionsMenuChanged(_ sender: NSMenuItem) {
+        for menuItem: NSMenuItem in sender.parent!.submenu!.items {
+            menuItem.state = NSControl.StateValue.off;
+        }
+        sender.state = NSControl.StateValue.on;
+
+        /// should have a pair of device to res
+        self.selectedSourceResolution = sender.representedObject as! Int
+
+        let deviceMenuItem = sender.parent!
+        for menuItem: NSMenuItem in deviceMenuItem.parent!.submenu!.items {
+            menuItem.state = NSControl.StateValue.off;
+        }
+        deviceMenuItem.state = NSControl.StateValue.on
+
+        self.selectedDeviceIndex = deviceMenuItem.representedObject as! Int
+
+        /// then select the device and resolution
+        self.startCaptureWithVideoDevice(defaultDevice: self.selectedDeviceIndex)
+        self.applyResolutionToDevice()
+    }
+
+    func applyResolutionToDevice()
+    {
+        let device = (self.captureSession.inputs[0] as! AVCaptureDeviceInput).device
+        try! device.lockForConfiguration()
+
+        let format = device.formats[selectedSourceResolution]
+        device.activeFormat = format
+
+        let maxFrameRateDuration = format.videoSupportedFrameRateRanges.reduce(CMTime.positiveInfinity) { (res, e) -> CMTime in
+            CMTimeMinimum(res, e.minFrameDuration)
+        }
+        device.activeVideoMinFrameDuration = maxFrameRateDuration
+        device.unlockForConfiguration()
+    }
+
+    // MARK - source resolutions
+    func addResolutionsTo(menuItem: NSMenuItem, forDevice: AVCaptureDevice) {
+
+        let selectedDevice = forDevice
+        let resolutionsMenu = NSMenu();
+
+        var resIndex = 0;
+
+
+            for res in selectedDevice.formats {
+
+                let menuTitle = descriptionFor(resolution: res)
+
+                //if not already in the menu
+                if(resolutionsMenu.indexOfItem(withTitle: menuTitle) == -1) {
+
+                    let deviceMenuItem = NSMenuItem(title: menuTitle, action: #selector(sourceResolutionsMenuChanged), keyEquivalent: "")
+                    deviceMenuItem.target = self;
+                    deviceMenuItem.representedObject = resIndex;
+
+                    if(selectedDevice.activeFormat == res) {
+                        deviceMenuItem.state = NSControl.StateValue.on;
+                        self.selectedSourceResolution = resIndex
+                    }
+
+                    resolutionsMenu.addItem(deviceMenuItem);
+
+                    menuItem.submenu = resolutionsMenu
+                }
+                resIndex += 1;
+
+
+            }
+    }
+
+    private func descriptionFor(resolution: AVCaptureDevice.Format) -> String {
+        let dims = CMVideoFormatDescriptionGetDimensions(resolution.formatDescription)
+        return "\(dims.width)x\(dims.height)"
+    }
+
+
 }
 
 // MARK: - Helper Functions
