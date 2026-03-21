@@ -178,16 +178,6 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
             deviceIndex += 1
         }
 
-        // Preferences item at the bottom of the source menu, separated
-        deviceMenu.addItem(NSMenuItem.separator())
-        let prefsItem = NSMenuItem(
-            title: "Preferences...",
-            action: #selector(openPreferences),
-            keyEquivalent: ","
-        )
-        prefsItem.target = self
-        deviceMenu.addItem(prefsItem)
-
         selectSourceMenu.submenu = deviceMenu
     }
 
@@ -553,7 +543,7 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
 
     // MARK: Preferences
 
-    @objc func openPreferences() {
+    @IBAction func openPreferences(_ sender: Any?) {
         if preferencesWindowController == nil {
             preferencesWindowController = QCPreferencesWindowController()
             // Rebuild the device menu immediately whenever the checkbox is toggled
@@ -638,13 +628,8 @@ class QCAppDelegate: NSObject, NSApplicationDelegate, QCUsbWatcherDelegate {
     }
 
     private func descriptionFor(resolution: AVCaptureDevice.Format) -> String {
-        var result = ""
-        if #available(OSX 10.15, *) {
-            result = "\(resolution.formatDescription.dimensions.width)x\(resolution.formatDescription.dimensions.height)"
-        } else {
-            result = "\(resolution)"  // this looks fairly bad on mac os pre 10.15
-        }
-        return result
+        let dims = CMVideoFormatDescriptionGetDimensions(resolution.formatDescription)
+        return "\(dims.width)x\(dims.height)"
     }
 
 
